@@ -6,6 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <include file="mvp/roles.sql" relativeToChangelogFile="true"/>
+    <include file="mvp/users.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
 

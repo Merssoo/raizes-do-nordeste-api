@@ -6,7 +6,6 @@ spring:
     username: postgres
     password: admin
   jpa:
-    
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -20,6 +19,16 @@ spring:
   mvc:
     log-request-details: true
     servlet:
-      path: /api
+      path: /raizes/api
+
+logging:
+  level:
+    root: INFO
+    com.raizesdonordeste: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.type.descriptor.sql.BasicBinder: TRACE
+
 server:
   port: 8080

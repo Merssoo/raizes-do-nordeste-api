@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.StringPath;
+import com.raizesdonordeste.api.exception.BusinessException;
 import com.raizesdonordeste.infrastructure.repository.BaseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> 
     @Transactional
     public D update(ID id, D dto) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Registro não encontrado com o ID: " + id);
+            throw new BusinessException("Registro não encontrado com o ID: " + id);
         }
         T entity = toEntity(dto);
         T savedEntity = repository.save(entity);
@@ -100,7 +101,7 @@ public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> 
                     StringPath path = pathBuilder.getString(campo);
                     builder.and(path.containsIgnoreCase(valor));
                 } catch (Exception e) {
-                    throw new RuntimeException("Campo de filtro inválido: " + campo);
+                    throw new BusinessException("Campo de filtro inválido: " + campo);
                 }
             }
         }

@@ -9,7 +9,7 @@ CREATE SEQUENCE IF NOT EXISTS seq_user
     CACHE 1;
 
 -- changeset emerson:6
-CREATE TABLE user (
+CREATE TABLE users (
     id BIGINT NOT NULL DEFAULT nextval('seq_user'),
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
