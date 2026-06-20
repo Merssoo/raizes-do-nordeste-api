@@ -84,29 +84,8 @@ public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> 
     @Override
     @Transactional(readOnly = true)
     public Page<D> getPaged(String filter, Predicate predicate, Pageable pageable) {
-        BooleanBuilder builder = new BooleanBuilder();
-
-        if (predicate != null) {
-            builder.and(predicate);
-        }
-
-        if (filter != null && filter.contains("=")) {
-            PathBuilder<T> pathBuilder = new PathBuilder<>(entityClass, entityClass.getSimpleName().toLowerCase());
-            String[] parts = filter.split("=");
-            if (parts.length >= 2) {
-                String campo = parts[0];
-                String valor = parts[1];
-
-                try {
-                    StringPath path = pathBuilder.getString(campo);
-                    builder.and(path.containsIgnoreCase(valor));
-                } catch (Exception e) {
-                    throw new BusinessException("Campo de filtro inválido: " + campo);
-                }
-            }
-        }
-
-        return repository.findAll(builder, pageable).map(this::toDto);
+        return repository.findAllWithFilter(filter, predicate, entityClass, pageable)
+                .map(this::toDto);
     }
 
     public abstract T toEntity(D dto);

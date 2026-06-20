@@ -1,32 +1,24 @@
 package com.raizesdonordeste.application.service;
 
+import com.raizesdonordeste.api.dto.UnidadeDTO;
 import com.raizesdonordeste.domain.entity.Unidade;
 import com.raizesdonordeste.infrastructure.repository.UnidadeRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class UnidadeService {
+public class UnidadeService extends BaseService<Unidade, UnidadeDTO, Long> {
 
-    private final UnidadeRepository repository;
-
-    @Transactional
-    public Unidade save(Unidade unidade) {
-        return repository.save(unidade);
+    public UnidadeService(UnidadeRepository repository) {
+        super(repository, Unidade.class);
     }
 
-    @Transactional(readOnly = true)
-    public List<Unidade> getAll() {
-        return repository.findAll();
+    @Override
+    public Unidade toEntity(UnidadeDTO dto) {
+        return new Unidade(dto.getId(), dto.getNome(), dto.getCidade(), dto.getEstado(), dto.getAtivo());
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Unidade> getById(Long id) {
-        return repository.findById(id);
+    @Override
+    public UnidadeDTO toDto(Unidade entity) {
+        return new UnidadeDTO(entity.getId(), entity.getNome(), entity.getCidade(), entity.getEstado(), entity.getAtivo());
     }
 }

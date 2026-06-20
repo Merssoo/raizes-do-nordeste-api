@@ -1,13 +1,14 @@
 package com.raizesdonordeste.api.controller;
 
+import com.raizesdonordeste.api.dto.UnidadeDTO;
 import com.raizesdonordeste.application.service.UnidadeService;
-import com.raizesdonordeste.domain.entity.Unidade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/unidades")
@@ -17,17 +18,19 @@ public class UnidadeController {
     private final UnidadeService service;
 
     @PostMapping
-    public ResponseEntity<Unidade> criar(@RequestBody @Valid Unidade unidade) {
-        return ResponseEntity.status(201).body(service.save(unidade));
+    public ResponseEntity<UnidadeDTO> criar(@RequestBody @Valid UnidadeDTO unidadeDto) {
+        return ResponseEntity.status(201).body(service.save(unidadeDto));
     }
 
     @GetMapping
-    public ResponseEntity<List<Unidade>> listarTodos() {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<Page<UnidadeDTO>> listarTodos(
+            @RequestParam(required = false) String filter,
+            @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
+        return ResponseEntity.ok(service.getPaged(filter, pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Unidade> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<UnidadeDTO> buscarPorId(@PathVariable Long id) {
         return service.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

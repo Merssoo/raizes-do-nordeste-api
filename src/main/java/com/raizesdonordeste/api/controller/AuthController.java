@@ -3,7 +3,7 @@ package com.raizesdonordeste.api.controller;
 import com.raizesdonordeste.api.dto.request.LoginRequest;
 import com.raizesdonordeste.api.dto.request.RegisterRequest;
 import com.raizesdonordeste.api.dto.response.AuthResponse;
-import com.raizesdonordeste.application.service.AuthService;
+import com.raizesdonordeste.application.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+    private final UsuarioService authService;
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(
