@@ -1,6 +1,6 @@
 package com.raizesdonordeste.infrastructure.security;
 
-import com.raizesdonordeste.api.dto.response.AuthenticatedUsuarioDTO;
+import com.raizesdonordeste.api.dto.DTO.AuthenticatedUsuarioDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

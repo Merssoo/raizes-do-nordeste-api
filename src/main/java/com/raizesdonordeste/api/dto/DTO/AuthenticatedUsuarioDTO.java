@@ -1,4 +1,4 @@
-package com.raizesdonordeste.api.dto.response;
+package com.raizesdonordeste.api.dto.DTO;
 
 public record AuthenticatedUsuarioDTO(Long id,
                                       String email,

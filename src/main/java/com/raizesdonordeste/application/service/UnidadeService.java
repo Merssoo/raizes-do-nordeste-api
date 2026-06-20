@@ -1,6 +1,6 @@
 package com.raizesdonordeste.application.service;
 
-import com.raizesdonordeste.api.dto.UnidadeDTO;
+import com.raizesdonordeste.api.dto.DTO.UnidadeDTO;
 import com.raizesdonordeste.domain.entity.Unidade;
 import com.raizesdonordeste.infrastructure.repository.UnidadeRepository;
 import org.springframework.stereotype.Service;
