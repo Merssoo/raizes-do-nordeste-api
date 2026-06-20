@@ -1,6 +1,6 @@
 package com.raizesdonordeste.infrastructure.security;
 
-import com.raizesdonordeste.api.dto.AuthenticatedUserDTO;
+import com.raizesdonordeste.api.dto.response.AuthenticatedUsuarioDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     String nome = claims.get("nome", String.class);
                     String role = claims.get("role", String.class);
 
-                    AuthenticatedUserDTO dto = new AuthenticatedUserDTO(userId, email, nome, role);
+                    AuthenticatedUsuarioDTO dto = new AuthenticatedUsuarioDTO(userId, email, nome, role);
 
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(dto, null, Collections.emptyList());

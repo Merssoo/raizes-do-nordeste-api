@@ -1,6 +1,6 @@
 package com.raizesdonordeste.infrastructure.security;
 
-import com.raizesdonordeste.domain.entity.User;
+import com.raizesdonordeste.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -17,7 +17,7 @@ public class JwtService {
     @Value("${jwt.secret:defaultSecretKeyWithAtLeast32CharactersLong}")
     private String secret;
 
-    public String generateToken(User user) {
+    public String generateToken(Usuario user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("userId", user.getId())

@@ -4,16 +4,16 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "usuarios")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-    @SequenceGenerator(name = "user_seq", sequenceName = "seq_user", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_seq")
+    @SequenceGenerator(name = "usuario_seq", sequenceName = "seq_usuario", allocationSize = 1)
     private Long id;
 
     private String nome;

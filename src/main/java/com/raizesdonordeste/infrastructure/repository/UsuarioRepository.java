@@ -1,12 +1,12 @@
 package com.raizesdonordeste.infrastructure.repository;
 
-import com.raizesdonordeste.domain.entity.User;
+import com.raizesdonordeste.domain.entity.Usuario;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends BaseRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+public interface UsuarioRepository extends BaseRepository<Usuario, Long> {
+    Optional<Usuario> findByEmail(String email);
     boolean existsByEmail(String email);
 }
