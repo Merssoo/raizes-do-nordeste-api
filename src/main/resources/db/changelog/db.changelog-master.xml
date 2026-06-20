@@ -10,6 +10,7 @@
     <include file="mvp/unidades.sql" relativeToChangelogFile="true"/>
     <include file="mvp/produtos.sql" relativeToChangelogFile="true"/>
     <include file="mvp/estoques.sql" relativeToChangelogFile="true"/>
+    <include file="mvp/pedidos.sql" relativeToChangelogFile="true"/>
 
 
 

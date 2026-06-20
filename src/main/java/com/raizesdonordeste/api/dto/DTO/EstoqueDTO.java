@@ -1,4 +1,4 @@
-package com.raizesdonordeste.api.dto;
+package com.raizesdonordeste.api.dto.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

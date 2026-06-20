@@ -1,6 +1,6 @@
 package com.raizesdonordeste.application.service;
 
-import com.raizesdonordeste.api.dto.EstoqueDTO;
+import com.raizesdonordeste.api.dto.DTO.EstoqueDTO;
 import com.raizesdonordeste.domain.entity.Estoque;
 import com.raizesdonordeste.domain.entity.Produto;
 import com.raizesdonordeste.domain.entity.Unidade;

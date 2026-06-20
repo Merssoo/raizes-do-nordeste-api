@@ -1,7 +1,7 @@
 package com.raizesdonordeste.application.service;
 
 import com.querydsl.core.BooleanBuilder;
-import com.raizesdonordeste.api.dto.ProdutoDTO;
+import com.raizesdonordeste.api.dto.DTO.ProdutoDTO;
 import com.raizesdonordeste.domain.entity.Produto;
 import com.raizesdonordeste.domain.entity.QEstoque;
 import com.raizesdonordeste.domain.entity.QProduto;
