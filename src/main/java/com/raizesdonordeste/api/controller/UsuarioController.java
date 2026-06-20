@@ -6,12 +6,11 @@ import com.raizesdonordeste.application.service.UsuarioService;
 import com.raizesdonordeste.domain.entity.Usuario;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -19,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+
+    @GetMapping
+    public ResponseEntity<Page<Usuario>> listar(Pageable pageable) {
+        return ResponseEntity.ok(usuarioService.listarTodos(pageable));
+    }
 
     @PostMapping("/create-cliente")
     public ResponseEntity<Void> criarCliente(@RequestBody @Valid CreateClienteRequest request) {

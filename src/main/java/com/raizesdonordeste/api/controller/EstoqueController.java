@@ -50,6 +50,17 @@ public class EstoqueController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/produtos/{id}")
+    public ResponseEntity<ProdutoDTO> atualizarProduto(@PathVariable Long id, @RequestBody @Valid ProdutoDTO produtoDto) {
+        return ResponseEntity.ok(produtoService.update(id, produtoDto));
+    }
+
+    @DeleteMapping("/produtos/{id}")
+    public ResponseEntity<Void> inativarProduto(@PathVariable Long id) {
+        produtoService.inativar(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/produtos")
     public ResponseEntity<ProdutoDTO> criarProduto(@RequestBody @Valid ProdutoDTO produtoDto) {
         return ResponseEntity.status(201).body(produtoService.save(produtoDto));

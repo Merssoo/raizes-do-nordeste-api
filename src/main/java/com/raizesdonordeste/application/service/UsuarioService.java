@@ -13,6 +13,8 @@ import com.raizesdonordeste.infrastructure.repository.RoleRepository;
 import com.raizesdonordeste.infrastructure.repository.UsuarioRepository;
 import com.raizesdonordeste.infrastructure.security.JwtService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,11 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.adminSecretKey = adminSecretKey;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Usuario> listarTodos(Pageable pageable) {
+        return usuarioRepository.findAll(pageable);
     }
 
     @Transactional

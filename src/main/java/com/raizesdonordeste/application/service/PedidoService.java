@@ -151,6 +151,18 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
     }
 
     @Transactional
+    public void cancelar(Long id) {
+        PedidoDTO dto = getByIdOrError(id);
+        
+        if (dto.getStatus() == StatusPedido.ENTREGUE || dto.getStatus() == StatusPedido.CANCELADO) {
+            throw new BusinessException("Pedido não pode ser cancelado neste estado");
+        }
+
+        dto.setStatus(StatusPedido.CANCELADO);
+        save(dto);
+    }
+
+    @Transactional
     public void atualizarStatus(Long id, StatusPedido novoStatus) {
         Pedido pedido = repository.findById(id)
                 .orElseThrow(() -> new BusinessException("Pedido não encontrado"));

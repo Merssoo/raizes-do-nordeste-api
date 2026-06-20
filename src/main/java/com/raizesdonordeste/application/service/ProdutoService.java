@@ -9,6 +9,7 @@ import com.raizesdonordeste.infrastructure.repository.ProdutoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
@@ -25,6 +26,13 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
     @Override
     public ProdutoDTO toDto(Produto entity) {
         return new ProdutoDTO(entity.getId(), entity.getNome(), entity.getDescricao(), entity.getPreco(), entity.getAtivo());
+    }
+
+    @Transactional
+    public void inativar(Long id) {
+        ProdutoDTO dto = getByIdOrError(id);
+        dto.setAtivo(false);
+        save(dto);
     }
 
     public Page<ProdutoDTO> getProdutosPorUnidade(Long idUnidade, String filter, Pageable pageable) {

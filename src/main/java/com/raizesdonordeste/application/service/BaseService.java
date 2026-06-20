@@ -55,6 +55,13 @@ public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> 
         return repository.findById(id).map(this::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public D getByIdOrError(ID id) {
+        return repository.findById(id)
+                .map(this::toDto)
+                .orElseThrow(() -> new BusinessException("Registro não encontrado com o ID: " + id));
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<D> getAll() {

@@ -41,4 +41,10 @@ public class PedidoController {
         pedidoService.atualizarStatus(id, request.status());
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> cancelar(@PathVariable Long id) {
+        pedidoService.cancelar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
