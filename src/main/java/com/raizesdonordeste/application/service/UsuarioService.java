@@ -1,5 +1,6 @@
 package com.raizesdonordeste.application.service;
 
+import com.raizesdonordeste.api.dto.request.CreateClienteRequest;
 import com.raizesdonordeste.api.dto.request.CreateStaffRequest;
 import com.raizesdonordeste.api.dto.request.LoginRequest;
 import com.raizesdonordeste.api.dto.request.RegisterRequest;
@@ -38,19 +39,37 @@ public class UsuarioService {
     }
 
     @Transactional
+    public void criarCliente(CreateClienteRequest request) {
+        if (usuarioRepository.existsByEmail(request.email())) {
+            throw new BusinessException("E-mail já cadastrado.");
+        }
+
+        Role role = roleRepository
+                .findByNome(RoleEnum.CLIENTE.name())
+                .orElseThrow(() -> new BusinessException("Role não encontrada"));
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(request.nome());
+        usuario.setEmail(request.email());
+        usuario.setSenha(passwordEncoder.encode(request.senha()));
+        usuario.setAtivo(true);
+        usuario.setRole(role);
+
+        usuarioRepository.save(usuario);
+    }
+
+    @Transactional
     public void criarUsuarioStaff(CreateStaffRequest request, Usuario criador) {
         RoleEnum roleCriador = RoleEnum.valueOf(criador.getRole().getNome());
 
-        if (roleCriador == RoleEnum.ADMIN) {
-            if (request.role() != RoleEnum.GERENTE) {
-                throw new BusinessException("ADMIN só pode criar GERENTE");
-            }
-        } else if (roleCriador == RoleEnum.GERENTE) {
+        if (roleCriador.equals(RoleEnum.CLIENTE)) {
+            throw new BusinessException("Usuário não tem permissão para criar staff");
+        }
+
+        if (roleCriador == RoleEnum.GERENTE) {
             if (request.role() != RoleEnum.COZINHA && request.role() != RoleEnum.ATENDENTE) {
                 throw new BusinessException("GERENTE só pode criar COZINHA ou ATENDENTE");
             }
-        } else {
-            throw new BusinessException("Usuário não tem permissão para criar staff");
         }
 
         if (usuarioRepository.existsByEmail(request.email())) {

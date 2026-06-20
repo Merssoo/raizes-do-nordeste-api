@@ -1,5 +1,6 @@
 package com.raizesdonordeste.api.controller;
 
+import com.raizesdonordeste.api.dto.request.CreateClienteRequest;
 import com.raizesdonordeste.api.dto.request.CreateStaffRequest;
 import com.raizesdonordeste.application.service.UsuarioService;
 import com.raizesdonordeste.domain.entity.Usuario;
@@ -18,6 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+
+    @PostMapping("/create-cliente")
+    public ResponseEntity<Void> criarCliente(@RequestBody @Valid CreateClienteRequest request) {
+        usuarioService.criarCliente(request);
+        return ResponseEntity.status(201).build();
+    }
 
     @PostMapping("/create-staff")
     public ResponseEntity<Void> criarStaff(
