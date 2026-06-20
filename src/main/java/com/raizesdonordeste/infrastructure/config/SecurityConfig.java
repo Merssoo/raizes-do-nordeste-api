@@ -1,5 +1,4 @@
-package com.raizesdonordeste.infrastructure.config;
-
+import com.raizesdonordeste.domain.enums.RoleEnum;
 import com.raizesdonordeste.infrastructure.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,9 +31,19 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Permite qualquer rota que contenha /auth/ ou /error, independente do prefixo
-                        .requestMatchers("/auth/**", "/error/**").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/error/**").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/unidades").hasRole(RoleEnum.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/api/unidades").authenticated()
+
+                        .requestMatchers(HttpMethod.POST, "/api/estoques/produtos").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
+                        .requestMatchers(HttpMethod.GET, "/api/estoques/*/produtos").authenticated()
+
+                        .requestMatchers(HttpMethod.PUT, "/api/estoques/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
+                        .requestMatchers(HttpMethod.GET, "/api/estoques/unidade/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name(), RoleEnum.ATENDENTE.name())
+
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios").hasRole(RoleEnum.ADMIN.name())
+
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
