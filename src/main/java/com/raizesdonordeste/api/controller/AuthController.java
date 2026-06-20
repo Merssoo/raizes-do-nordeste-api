@@ -7,10 +7,7 @@ import com.raizesdonordeste.application.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,6 +21,15 @@ public class AuthController {
             @RequestBody @Valid RegisterRequest request
     ) {
         authService.register(request);
+        return ResponseEntity.status(201).build();
+    }
+
+    @PostMapping("/register-admin")
+    public ResponseEntity<Void> registerAdmin(
+            @RequestBody @Valid RegisterRequest request,
+            @RequestHeader("X-Admin-Secret-Key") String secretKey
+    ) {
+        authService.registerAdmin(request, secretKey);
         return ResponseEntity.status(201).build();
     }
 

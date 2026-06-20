@@ -1,5 +1,6 @@
 package com.raizesdonordeste.application.service;
 
+import com.raizesdonordeste.api.dto.request.CreateStaffRequest;
 import com.raizesdonordeste.api.dto.request.LoginRequest;
 import com.raizesdonordeste.api.dto.request.RegisterRequest;
 import com.raizesdonordeste.api.dto.response.AuthResponse;
@@ -10,19 +11,89 @@ import com.raizesdonordeste.domain.enums.RoleEnum;
 import com.raizesdonordeste.infrastructure.repository.RoleRepository;
 import com.raizesdonordeste.infrastructure.repository.UsuarioRepository;
 import com.raizesdonordeste.infrastructure.security.JwtService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final String adminSecretKey;
+
+    public UsuarioService(UsuarioRepository usuarioRepository,
+                          RoleRepository roleRepository,
+                          PasswordEncoder passwordEncoder,
+                          JwtService jwtService,
+                          @Value("${app.admin-secret-key}") String adminSecretKey) {
+        this.usuarioRepository = usuarioRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.adminSecretKey = adminSecretKey;
+    }
+
+    @Transactional
+    public void criarUsuarioStaff(CreateStaffRequest request, Usuario criador) {
+        RoleEnum roleCriador = RoleEnum.valueOf(criador.getRole().getNome());
+
+        if (roleCriador == RoleEnum.ADMIN) {
+            if (request.role() != RoleEnum.GERENTE) {
+                throw new BusinessException("ADMIN só pode criar GERENTE");
+            }
+        } else if (roleCriador == RoleEnum.GERENTE) {
+            if (request.role() != RoleEnum.COZINHA && request.role() != RoleEnum.ATENDENTE) {
+                throw new BusinessException("GERENTE só pode criar COZINHA ou ATENDENTE");
+            }
+        } else {
+            throw new BusinessException("Usuário não tem permissão para criar staff");
+        }
+
+        if (usuarioRepository.existsByEmail(request.email())) {
+            throw new BusinessException("E-mail já cadastrado.");
+        }
+
+        Role role = roleRepository
+                .findByNome(request.role().name())
+                .orElseThrow(() -> new BusinessException("Role não encontrada"));
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(request.nome());
+        usuario.setEmail(request.email());
+        usuario.setSenha(passwordEncoder.encode(request.senha()));
+        usuario.setAtivo(true);
+        usuario.setRole(role);
+
+        usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void registerAdmin(RegisterRequest request, String secretKey) {
+        if (!adminSecretKey.equals(secretKey)) {
+            throw new BusinessException("Chave de segurança inválida.");
+        }
+        
+        if (usuarioRepository.existsByEmail(request.email())) {
+            throw new BusinessException("E-mail já cadastrado.");
+        }
+
+        Role role = roleRepository
+                .findByNome(RoleEnum.ADMIN.name())
+                .orElseThrow(() -> new BusinessException("Role não encontrada"));
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(request.nome());
+        usuario.setEmail(request.email());
+        usuario.setSenha(passwordEncoder.encode(request.senha()));
+        usuario.setAtivo(true);
+        usuario.setRole(role);
+
+        usuarioRepository.save(usuario);
+    }
 
     @Transactional
     public void register(RegisterRequest request) {

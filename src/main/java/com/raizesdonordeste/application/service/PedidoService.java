@@ -81,7 +81,7 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
         pedido.setCliente(cliente);
         pedido.setCanalPedido(request.canalPedido());
         pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
-        pedido.setCreated_at(LocalDateTime.now());
+        pedido.setCreatedAt(LocalDateTime.now());
         BigDecimal valorTotal = BigDecimal.ZERO;
 
         List<ItemPedido> itens = new ArrayList<>();
