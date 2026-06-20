@@ -9,6 +9,9 @@ import com.raizesdonordeste.infrastructure.repository.ProdutoRepository;
 import com.raizesdonordeste.infrastructure.repository.UnidadeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class EstoqueService extends BaseService<Estoque, EstoqueDTO, Long> {
 
@@ -38,5 +41,11 @@ public class EstoqueService extends BaseService<Estoque, EstoqueDTO, Long> {
             entity.getProduto() != null ? entity.getProduto().getId() : null, 
             entity.getUnidade() != null ? entity.getUnidade().getId() : null
         );
+    }
+
+    public List<EstoqueDTO> listarPorUnidade(Long unidadeId) {
+        return ((EstoqueRepository) repository).findByUnidadeId(unidadeId).stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 }

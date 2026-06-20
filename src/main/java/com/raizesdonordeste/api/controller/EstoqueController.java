@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 @RestController
 @RequestMapping("/estoques")
 @RequiredArgsConstructor
@@ -23,6 +24,16 @@ public class EstoqueController {
     @PostMapping
     public ResponseEntity<EstoqueDTO> criar(@RequestBody @Valid EstoqueDTO estoqueDto) {
         return ResponseEntity.status(201).body(service.save(estoqueDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EstoqueDTO> atualizar(@PathVariable Long id, @RequestBody @Valid EstoqueDTO estoqueDto) {
+        return ResponseEntity.ok(service.update(id, estoqueDto));
+    }
+
+    @GetMapping("/unidade/{unidadeId}")
+    public ResponseEntity<List<EstoqueDTO>> listarPorUnidade(@PathVariable Long unidadeId) {
+        return ResponseEntity.ok(service.listarPorUnidade(unidadeId));
     }
 
     @GetMapping
@@ -39,17 +50,17 @@ public class EstoqueController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Endpoints de Produto movidos para cá
     @PostMapping("/produtos")
     public ResponseEntity<ProdutoDTO> criarProduto(@RequestBody @Valid ProdutoDTO produtoDto) {
         return ResponseEntity.status(201).body(produtoService.save(produtoDto));
     }
 
-    @GetMapping("/produtos")
-    public ResponseEntity<Page<ProdutoDTO>> listarTodosProdutos(
+    @GetMapping("/{idUnidade}/produtos")
+    public ResponseEntity<Page<ProdutoDTO>> listarProdutosPorUnidade(
+            @PathVariable Long idUnidade,
             @RequestParam(required = false) String filter,
             @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
-        return ResponseEntity.ok(produtoService.getPaged(filter, pageable));
+        return ResponseEntity.ok(produtoService.getProdutosPorUnidade(idUnidade, filter, pageable));
     }
 
     @GetMapping("/produtos/{id}")
