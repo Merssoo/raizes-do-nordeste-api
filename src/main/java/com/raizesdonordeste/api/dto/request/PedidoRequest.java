@@ -10,5 +10,6 @@ public record PedidoRequest(
         @NotNull(message = "Canal do pedido é obrigatório")
         CanalPedido canalPedido,
         @NotEmpty(message = "Itens do pedido não podem estar vazios")
-        List<ItemPedidoRequest> itens
+        List<ItemPedidoRequest> itens,
+        Long idCliente
 ) {}

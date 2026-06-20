@@ -7,6 +7,7 @@ import com.raizesdonordeste.api.dto.request.PedidoRequest;
 import com.raizesdonordeste.api.exception.BusinessException;
 import com.raizesdonordeste.domain.entity.*;
 import com.raizesdonordeste.domain.enums.CanalPedido;
+import com.raizesdonordeste.domain.enums.RoleEnum;
 import com.raizesdonordeste.domain.enums.StatusPedido;
 import com.raizesdonordeste.infrastructure.repository.*;
 import org.springframework.data.domain.Page;
@@ -72,7 +73,17 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
     }
 
     @Transactional
-    public PedidoDTO criarPedido(PedidoRequest request, Usuario cliente) {
+    public PedidoDTO criarPedido(PedidoRequest request, Usuario usuario) {
+
+        Usuario cliente = usuario;
+
+        if (!usuario.getRole().getNome().equals(RoleEnum.CLIENTE)) {
+            if (request.idCliente() == null) {
+                throw new BusinessException("ID do cliente é obrigatório para usuários não clientes");
+            }
+            cliente = usuarioRepository.findById(request.idCliente()).orElseThrow(() -> new BusinessException("Cliente não encontrado"));
+        }
+
         Unidade unidade = unidadeRepository.findById(request.unidadeId())
                 .orElseThrow(() -> new BusinessException("Unidade não encontrada"));
 
