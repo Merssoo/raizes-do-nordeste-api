@@ -2,6 +2,7 @@ package com.raizesdonordeste.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pagamentos")
@@ -19,6 +20,10 @@ public class Pagamento {
     private BigDecimal valor;
 
     private String status;
+
+    private String formaPagamento;
+
+    LocalDateTime dataPagamento;
 
     @OneToOne
     @JoinColumn(name = "pedido_id")

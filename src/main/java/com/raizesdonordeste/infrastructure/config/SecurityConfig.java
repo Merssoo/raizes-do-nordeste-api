@@ -1,3 +1,5 @@
+package com.raizesdonordeste.infrastructure.config;
+
 import com.raizesdonordeste.domain.enums.RoleEnum;
 import com.raizesdonordeste.infrastructure.security.JwtFilter;
 import lombok.RequiredArgsConstructor;

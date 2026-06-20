@@ -8,6 +8,7 @@ CREATE TABLE pedidos (
     valor_total DECIMAL(19, 2) NOT NULL,
     canal_pedido VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     usuario_id BIGINT REFERENCES usuarios(id),
     unidade_id BIGINT REFERENCES unidades(id)
 );
@@ -29,5 +30,7 @@ CREATE TABLE pagamentos (
     id BIGINT PRIMARY KEY DEFAULT nextval('pagamentos_id_seq'),
     valor DECIMAL(19, 2) NOT NULL,
     status VARCHAR(50) NOT NULL,
+    forma_pagamento VARCHAR(50) NOT NULL,
+    data_pagamento TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     pedido_id BIGINT REFERENCES pedidos(id)
 );

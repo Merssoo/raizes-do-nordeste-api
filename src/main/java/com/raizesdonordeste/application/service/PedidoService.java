@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,6 +81,7 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
         pedido.setCliente(cliente);
         pedido.setCanalPedido(request.canalPedido());
         pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
+        pedido.setCreated_at(LocalDateTime.now());
         BigDecimal valorTotal = BigDecimal.ZERO;
 
         List<ItemPedido> itens = new ArrayList<>();

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Service
@@ -30,6 +31,8 @@ public class PagamentoService {
         Pagamento pagamento = new Pagamento();
         pagamento.setPedido(pedido);
         pagamento.setValor(pedido.getValorTotal());
+        pagamento.setDataPagamento(LocalDateTime.now());
+        pagamento.setFormaPagamento(request.formaPagamento());
 
         if (aprovado) {
             pagamento.setStatus("APROVADO");

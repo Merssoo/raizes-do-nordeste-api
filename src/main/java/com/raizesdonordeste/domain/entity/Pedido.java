@@ -4,6 +4,7 @@ import com.raizesdonordeste.domain.enums.StatusPedido;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pedidos")
@@ -25,6 +26,8 @@ public class Pedido {
 
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
+
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
