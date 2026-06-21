@@ -1,5 +1,6 @@
 package com.raizesdonordeste.api.controller;
 
+import com.raizesdonordeste.api.dto.AuthenticatedUsuarioDTO;
 import com.raizesdonordeste.api.dto.UsuarioDTO;
 import com.raizesdonordeste.api.dto.request.CreateClienteRequest;
 import com.raizesdonordeste.api.dto.request.CreateStaffRequest;
@@ -34,9 +35,9 @@ public class UsuarioController {
     @PostMapping("/create-staff")
     public ResponseEntity<Void> criarStaff(
             @RequestBody @Valid CreateStaffRequest request,
-            @AuthenticationPrincipal Usuario criador
+            @AuthenticationPrincipal AuthenticatedUsuarioDTO criadorDto
     ) {
-        usuarioService.criarUsuarioStaff(request, criador);
+        usuarioService.criarUsuarioStaff(request, criadorDto);
         return ResponseEntity.status(201).build();
     }
 }

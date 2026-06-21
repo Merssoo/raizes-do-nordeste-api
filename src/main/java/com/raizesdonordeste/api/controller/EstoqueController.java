@@ -55,7 +55,7 @@ public class EstoqueController {
         return ResponseEntity.ok(produtoService.update(id, produtoDto));
     }
 
-    @DeleteMapping("/produtos/{id}")
+    @PutMapping("/produtos/desativar/{id}")
     public ResponseEntity<Void> inativarProduto(@PathVariable Long id) {
         produtoService.inativar(id);
         return ResponseEntity.noContent().build();
@@ -79,5 +79,12 @@ public class EstoqueController {
         return produtoService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/produtos")
+    public ResponseEntity<Page<ProdutoDTO>> listarTodosProdutos(
+            @RequestParam(required = false) String filter,
+            @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
+        return ResponseEntity.ok(produtoService.getPaged(filter, pageable));
     }
 }

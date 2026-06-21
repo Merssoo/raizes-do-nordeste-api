@@ -79,10 +79,10 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
     }
 
     @Transactional
-    public PedidoDTO criarPedido(PedidoRequest request, Usuario usuario) {
-        Long idCliente = usuario.getId();
+    public PedidoDTO criarPedido(PedidoRequest request, AuthenticatedUsuarioDTO usuarioDTO) {
+        Long idCliente = usuarioDTO.id();
 
-        if (!usuario.getRole().getNome().equals(RoleEnum.CLIENTE)) {
+        if (!usuarioDTO.role().equals(RoleEnum.CLIENTE.name())) {
             if (request.idCliente() == null) {
                 throw new BusinessException("ID do cliente é obrigatório para usuários não clientes");
             }

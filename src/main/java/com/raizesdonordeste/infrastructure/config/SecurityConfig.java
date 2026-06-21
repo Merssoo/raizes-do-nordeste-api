@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/unidades").authenticated()
 
                         .requestMatchers(HttpMethod.POST, "/estoques/produtos").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
+                        .requestMatchers(HttpMethod.GET, "/estoques/produtos").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
                         .requestMatchers(HttpMethod.GET, "/estoques/*/produtos").authenticated()
 
                         .requestMatchers(HttpMethod.PUT, "/estoques/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())

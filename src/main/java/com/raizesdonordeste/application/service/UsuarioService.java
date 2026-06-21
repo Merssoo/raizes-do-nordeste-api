@@ -1,5 +1,6 @@
 package com.raizesdonordeste.application.service;
 
+import com.raizesdonordeste.api.dto.AuthenticatedUsuarioDTO;
 import com.raizesdonordeste.api.dto.RoleDTO;
 import com.raizesdonordeste.api.dto.UsuarioDTO;
 import com.raizesdonordeste.api.dto.request.CreateClienteRequest;
@@ -84,7 +85,10 @@ public class UsuarioService extends BaseService<Usuario, UsuarioDTO, Long> {
     }
 
     @Transactional
-    public void criarUsuarioStaff(CreateStaffRequest request, Usuario criador) {
+    public void criarUsuarioStaff(CreateStaffRequest request, AuthenticatedUsuarioDTO criadorDto) {
+        Usuario criador = usuarioRepository.findById(criadorDto.id())
+                .orElseThrow(() -> new BusinessException("Usuário criador não encontrado"));
+
         RoleEnum roleCriador = RoleEnum.valueOf(criador.getRole().getNome());
 
         if (roleCriador.equals(RoleEnum.CLIENTE)) {

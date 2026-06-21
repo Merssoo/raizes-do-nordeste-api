@@ -1,4 +1,5 @@
 package com.raizesdonordeste.api.controller;
+import com.raizesdonordeste.api.dto.AuthenticatedUsuarioDTO;
 import com.raizesdonordeste.api.dto.PedidoDTO;
 import com.raizesdonordeste.api.dto.request.PedidoRequest;
 import com.raizesdonordeste.api.dto.request.StatusPedidoRequest;
@@ -24,8 +25,8 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<PedidoDTO> criar(@RequestBody @Valid PedidoRequest request,
-                                           @AuthenticationPrincipal Usuario usuario) {
-        return ResponseEntity.status(201).body(pedidoService.criarPedido(request, usuario));
+                                           @AuthenticationPrincipal AuthenticatedUsuarioDTO usuarioDTO) {
+        return ResponseEntity.status(201).body(pedidoService.criarPedido(request, usuarioDTO));
     }
 
     @GetMapping
