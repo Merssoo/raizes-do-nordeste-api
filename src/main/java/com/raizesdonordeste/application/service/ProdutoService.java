@@ -35,16 +35,6 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
     }
 
     @Transactional
-    public ProdutoDTO atualizar(Long id, ProdutoDTO dto) {
-        Produto entity = repository.findById(id)
-                .orElseThrow(() -> new BusinessException("Produto não encontrado"));
-        entity.setNome(dto.getNome());
-        entity.setDescricao(dto.getDescricao());
-        entity.setPreco(dto.getPreco());
-        return toDto(repository.save(entity));
-    }
-
-    @Transactional
     public void inativar(Long id) {
         Produto entity = repository.findById(id)
                 .orElseThrow(() -> new BusinessException("Produto não encontrado"));
