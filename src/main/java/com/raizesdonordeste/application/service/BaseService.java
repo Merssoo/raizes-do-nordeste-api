@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.raizesdonordeste.api.exception.BusinessException;
 import com.raizesdonordeste.infrastructure.repository.BaseRepository;
 import org.springframework.data.domain.Page;
@@ -103,6 +104,16 @@ public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> 
     public Page<D> getPaged(String filter, Predicate predicate, Pageable pageable) {
         return repository.findAllWithFilter(filter, predicate, entityClass, pageable)
                 .map(this::toDto);
+    }
+
+    protected Page<D> applyFilterAndPagination(JPAQuery<T> query, Pageable pageable) {
+        Page<T> page = repository.findAllWithFilterQuery(query, null, entityClass, pageable);
+        return page.map(this::toDto);
+    }
+
+    protected Page<D> applyFilterAndPagination(JPAQuery<T> query, String filter, Pageable pageable) {
+        Page<T> page = repository.findAllWithFilterQuery(query, filter, entityClass, pageable);
+        return page.map(this::toDto);
     }
 
     public abstract T toEntity(D dto);
