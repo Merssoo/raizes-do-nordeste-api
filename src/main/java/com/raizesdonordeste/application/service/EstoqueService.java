@@ -19,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 
 @Service
 public class EstoqueService extends BaseService<Estoque, EstoqueDTO, Long> {
@@ -54,13 +56,10 @@ public class EstoqueService extends BaseService<Estoque, EstoqueDTO, Long> {
         );
     }
 
-    private void validarEstoqueProdutoUnidade(Long idProduto, Long idUnidade) {
+    private void validarEstoqueProdutoUnidade(Long idProduto, Long idUnidade, Long id) {
         QEstoque qEstoque = QEstoque.estoque;
-        BooleanExpression query = queryFactory.select(qEstoque)
-                .from(qEstoque)
-                .where(qEstoque.produto.id.eq(idProduto)
-                        .and(qEstoque.unidade.id.eq(idUnidade))).exists();
-
+        BooleanExpression query = qEstoque.produto.id.eq(idProduto).and(qEstoque.unidade.id.eq(idUnidade));
+        query = Objects.nonNull(id) ? query.and(qEstoque.id.ne(id)) : query;
         if (this.exist(query)) {
             throw new BusinessException("Já existe um estoque para o produto e unidade informados.");
         }
@@ -77,13 +76,13 @@ public class EstoqueService extends BaseService<Estoque, EstoqueDTO, Long> {
 
     @Transactional
     public EstoqueDTO criar(EstoqueDTO estoqueDTO) {
-        this.validarEstoqueProdutoUnidade(estoqueDTO.getProdutoId(), estoqueDTO.getUnidadeId());
+        this.validarEstoqueProdutoUnidade(estoqueDTO.getProdutoId(), estoqueDTO.getUnidadeId(), null);
         return this.save(estoqueDTO);
     }
 
     @Transactional
     public EstoqueDTO atualizar(Long id, EstoqueDTO estoqueDTO) {
-        this.validarEstoqueProdutoUnidade(estoqueDTO.getProdutoId(), estoqueDTO.getUnidadeId());
-        return this.update(estoqueDTO.getId(), estoqueDTO);
+        this.validarEstoqueProdutoUnidade(estoqueDTO.getProdutoId(), estoqueDTO.getUnidadeId(), id);
+        return this.update(id, estoqueDTO);
     }
 }
