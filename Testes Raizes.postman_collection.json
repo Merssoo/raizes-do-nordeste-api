@@ -1,0 +1,399 @@
+{
+	"info": {
+		"_postman_id": "839813f3-14a8-41f4-b10a-e32775488126",
+		"name": "Testes Raizes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30865104"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login Sucesso",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"cliente@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Cliente Novo\",\n  \"email\": \"clientenovo@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Erro Cadastro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Cliente Novo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "Criar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA3OTMyMSwiZXhwIjoxNzgyMDgyOTIxfQ.wZ-m4Rb2s9HnZ2dFhjvhJsvc7diKKhWUMSI5c_SZ5Wo"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "hash12ssd19sasas12ssq"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"unidadeId\": 1,\n    \"canalPedido\": \"WEB\",\n    \"itens\": [\n        {\n            \"produtoId\": 1,\n            \"quantidade\": 2\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Sem Token",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Erro Produto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA3OTMyMSwiZXhwIjoxNzgyMDgyOTIxfQ.wZ-m4Rb2s9HnZ2dFhjvhJsvc7diKKhWUMSI5c_SZ5Wo"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "hash12ssd19sasas12ssqqwxxwqxwq"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"unidadeId\": 1,\n    \"canalPedido\": \"WEB\",\n    \"itens\": [\n        {\n            \"produtoId\": 999,\n            \"quantidade\": 2\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pagamento",
+			"item": [
+				{
+					"name": "Sucesso",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA3OTMyMSwiZXhwIjoxNzgyMDgyOTIxfQ.wZ-m4Rb2s9HnZ2dFhjvhJsvc7diKKhWUMSI5c_SZ5Wo"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pedidoId\": 7,\n    \"formaPagamento\": \"PIX\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pagamentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pagamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Erro Pamento Pedido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA3OTMyMSwiZXhwIjoxNzgyMDgyOTIxfQ.wZ-m4Rb2s9HnZ2dFhjvhJsvc7diKKhWUMSI5c_SZ5Wo"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pedidoId\": 60,\n    \"formaPagamento\": \"PIX\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pagamentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pagamentos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unidades",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA3OTMyMSwiZXhwIjoxNzgyMDgyOTIxfQ.wZ-m4Rb2s9HnZ2dFhjvhJsvc7diKKhWUMSI5c_SZ5Wo"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/unidades?filter=nome%3Dunidade",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"unidades"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "nome%3Dunidade"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estoques",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJ1c2VySWQiOjIsIm5vbWUiOiJBZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MjA3OTc2NSwiZXhwIjoxNzgyMDgzMzY1fQ.9mQKUszz_RkEEukcP36D5WESNFh6AN3rgCNpIhRVamo"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
