@@ -39,9 +39,8 @@ public class EstoqueController {
 
     @GetMapping
     public ResponseEntity<Page<EstoqueDTO>> listarTodos(
-            @RequestParam(required = false) String filter,
             @PageableDefault(size = 10, sort = "id") Pageable pageable) {
-        return ResponseEntity.ok(service.getPaged(filter, pageable));
+        return ResponseEntity.ok(service.getPaged(pageable));
     }
 
     @GetMapping("/{id}")
