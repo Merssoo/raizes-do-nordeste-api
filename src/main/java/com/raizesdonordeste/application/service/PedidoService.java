@@ -156,13 +156,29 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
     @Transactional
     public void cancelar(Long id) {
         PedidoDTO dto = getByIdOrError(id);
-        
+
         if (dto.getStatus() == StatusPedido.ENTREGUE || dto.getStatus() == StatusPedido.CANCELADO) {
             throw new BusinessException("Pedido não pode ser cancelado neste estado");
         }
 
+        List<ItemPedidoDTO> itens = itemPedidoService.getAllByPredicate(new BooleanBuilder(QItemPedido.itemPedido.pedido.id.eq(dto.getId())));
+
+        List<Long> idsProduto = new ArrayList<>();
+        itens.forEach(item -> idsProduto.add(item.getProdutoDTO().getId()));
+
+        List<EstoqueDTO> estoqueDTOS = estoqueService.getAllByPredicate(new BooleanBuilder(QEstoque.estoque.produto.id.in(idsProduto)
+                .and(QEstoque.estoque.unidade.id.eq(dto.getUnidadeId()))));
+
+        for (ItemPedidoDTO itemPedidoDTO : itens) {
+            EstoqueDTO estoqueDTO = estoqueDTOS.stream().filter(e -> e.getProdutoId().equals(itemPedidoDTO.getProdutoDTO().getId())).findFirst()
+                    .orElseThrow(() -> new BusinessException("Estoque não encontrado para o produto: " + itemPedidoDTO.getProdutoDTO().getNome()));
+
+            estoqueDTO.setQuantidade(estoqueDTO.getQuantidade() + itemPedidoDTO.getQuantidade());
+            estoqueService.save(estoqueDTO);
+        }
+
         dto.setStatus(StatusPedido.CANCELADO);
-        this.save(dto);
+        save(dto);
     }
 
     @Transactional
