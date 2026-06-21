@@ -19,9 +19,4 @@ public class IdempotencyKey {
     private String responseBody;
 
     private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
 }

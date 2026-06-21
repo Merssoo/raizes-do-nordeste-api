@@ -36,22 +36,20 @@ public class ItemPedidoService extends BaseService<ItemPedido, ItemPedidoDTO, Lo
         entity.setQuantidade(dto.getQuantidade());
         entity.setPrecoUnitario(dto.getPrecoUnitario());
         entity.setSubtotal(dto.getSubtotal());
-        entity.setPedido(dto.getPedidoDTO() != null ? pedidoRepository.findById(dto.getPedidoDTO().getId()).orElse(null) : null);
-        entity.setProduto(dto.getProdutoDTO() != null ? produtoRepository.findById(dto.getProdutoDTO().getId()).orElse(null) : null);
+        entity.setPedido(dto.getPedidoId() != null ? pedidoRepository.findById(dto.getPedidoId()).orElse(null) : null);
+        entity.setProduto(dto.getProdutoId() != null ? produtoRepository.findById(dto.getProdutoId()).orElse(null) : null);
         return entity;
     }
 
     @Override
     public ItemPedidoDTO toDto(ItemPedido entity) {
-        PedidoDTO pedidoDTO = pedidoService.toDto(entity.getPedido());
-        ProdutoDTO produtoDTO = produtoService.toDto(entity.getProduto());
         return new ItemPedidoDTO(
                 entity.getId(),
                 entity.getQuantidade(),
                 entity.getPrecoUnitario(),
                 entity.getSubtotal(),
-                pedidoDTO,
-                produtoDTO
+                entity.getPedido().getId(),
+                entity.getProduto().getId()
         );
     }
 }

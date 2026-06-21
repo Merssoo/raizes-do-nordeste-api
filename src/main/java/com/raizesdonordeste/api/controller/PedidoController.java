@@ -3,6 +3,7 @@ import com.raizesdonordeste.api.dto.AuthenticatedUsuarioDTO;
 import com.raizesdonordeste.api.dto.PedidoDTO;
 import com.raizesdonordeste.api.dto.request.PedidoRequest;
 import com.raizesdonordeste.api.dto.request.StatusPedidoRequest;
+import com.raizesdonordeste.api.exception.BusinessException;
 import com.raizesdonordeste.application.service.PedidoService;
 import com.raizesdonordeste.domain.entity.Usuario;
 import com.raizesdonordeste.domain.enums.CanalPedido;
@@ -27,6 +28,10 @@ public class PedidoController {
     public ResponseEntity<PedidoDTO> criar(@RequestBody @Valid PedidoRequest request,
                                            @AuthenticationPrincipal AuthenticatedUsuarioDTO usuarioDTO,
                                            @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey) {
+
+        if (idempotencyKey == null || idempotencyKey.isBlank()) {
+            throw new BusinessException("O cabeçalho Idempotency-Key é obrigatório.");
+        }
         return ResponseEntity.status(201).body(pedidoService.criarPedido(request, usuarioDTO, idempotencyKey));
     }
 

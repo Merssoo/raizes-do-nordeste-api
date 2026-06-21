@@ -146,8 +146,7 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
             estoqueService.save(estoqueDTO);
 
             ItemPedidoDTO itemPedidoDTO = new ItemPedidoDTO();
-            itemPedidoDTO.setPedidoDTO(pedidoDTO);
-            itemPedidoDTO.setProdutoDTO(produtoDTO);
+            itemPedidoDTO.setProdutoId(produtoDTO.getId());
             itemPedidoDTO.setQuantidade(itemReq.quantidade());
             itemPedidoDTO.setPrecoUnitario(produtoDTO.getPreco());
             itemPedidoDTO.setSubtotal(produtoDTO.getPreco().multiply(BigDecimal.valueOf(itemReq.quantidade())));
@@ -159,13 +158,14 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
         PedidoDTO pedidoSalvoDTO = this.save(pedidoDTO);
 
         for (ItemPedidoDTO itemPedidoDTO : itens) {
+            itemPedidoDTO.setPedidoId(pedidoSalvoDTO.getId());
             itemPedidoService.save(itemPedidoDTO);
         }
 
         if (idempotencyKey != null) {
             try {
                 String responseBody = objectMapper.writeValueAsString(pedidoSalvoDTO);
-                idempotencyRepository.save(new IdempotencyKey(idempotencyKey, responseBody, null));
+                idempotencyRepository.save(new IdempotencyKey(idempotencyKey, responseBody, LocalDateTime.now()));
             } catch (Exception e) {
                 logger.error("Erro ao salvar resposta idempotente", e);
             }
@@ -194,14 +194,14 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
         List<ItemPedidoDTO> itens = itemPedidoService.getAllByPredicate(new BooleanBuilder(QItemPedido.itemPedido.pedido.id.eq(dto.getId())));
 
         List<Long> idsProduto = new ArrayList<>();
-        itens.forEach(item -> idsProduto.add(item.getProdutoDTO().getId()));
+        itens.forEach(item -> idsProduto.add(item.getProdutoId()));
 
         List<EstoqueDTO> estoqueDTOS = estoqueService.getAllByPredicate(new BooleanBuilder(QEstoque.estoque.produto.id.in(idsProduto)
                 .and(QEstoque.estoque.unidade.id.eq(dto.getUnidadeId()))));
 
         for (ItemPedidoDTO itemPedidoDTO : itens) {
-            EstoqueDTO estoqueDTO = estoqueDTOS.stream().filter(e -> e.getProdutoId().equals(itemPedidoDTO.getProdutoDTO().getId())).findFirst()
-                    .orElseThrow(() -> new BusinessException("Estoque não encontrado para o produto: " + itemPedidoDTO.getProdutoDTO().getNome()));
+            EstoqueDTO estoqueDTO = estoqueDTOS.stream().filter(e -> e.getProdutoId().equals(itemPedidoDTO.getProdutoId())).findFirst()
+                    .orElseThrow(() -> new BusinessException("Estoque não encontrado para o produto: " + itemPedidoDTO.getProdutoId()));
 
             estoqueDTO.setQuantidade(estoqueDTO.getQuantidade() + itemPedidoDTO.getQuantidade());
             estoqueService.save(estoqueDTO);

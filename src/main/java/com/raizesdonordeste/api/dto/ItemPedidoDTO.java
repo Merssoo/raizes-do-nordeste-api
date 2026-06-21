@@ -18,6 +18,6 @@ public class ItemPedidoDTO implements Identificavel<Long> {
     private Integer quantidade;
     private BigDecimal precoUnitario;
     private BigDecimal subtotal;
-    private PedidoDTO pedidoDTO;
-    private ProdutoDTO produtoDTO;
+    private Long pedidoId;
+    private Long produtoId;
 }
