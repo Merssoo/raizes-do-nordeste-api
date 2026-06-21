@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
 
@@ -32,7 +34,7 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
     public void inativar(Long id) {
         ProdutoDTO dto = getByIdOrError(id);
         dto.setAtivo(false);
-        save(dto);
+        this.save(dto);
     }
 
     public Page<ProdutoDTO> getProdutosPorUnidade(Long idUnidade, String filter, Pageable pageable) {
@@ -41,9 +43,10 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        builder.and(qEstoque.produto.id.eq(qProduto.id));
+        builder.and(qEstoque.produto.eq(qProduto));
         builder.and(qEstoque.unidade.id.eq(idUnidade));
+        builder.and(qEstoque.quantidade.gt(BigDecimal.ZERO));
 
-        return getPaged(filter, builder, pageable);
+        return this.getPaged(filter, builder, pageable);
     }
 }

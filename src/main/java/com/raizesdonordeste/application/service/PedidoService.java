@@ -135,7 +135,7 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
         }
 
         pedidoDTO.setValorTotal(valorTotal);
-        PedidoDTO pedidoSalvoDTO = save(pedidoDTO);
+        PedidoDTO pedidoSalvoDTO = this.save(pedidoDTO);
 
         for (ItemPedidoDTO itemPedidoDTO : itens) {
             itemPedidoService.save(itemPedidoDTO);
@@ -162,7 +162,7 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
         }
 
         dto.setStatus(StatusPedido.CANCELADO);
-        save(dto);
+        this.save(dto);
     }
 
     @Transactional
