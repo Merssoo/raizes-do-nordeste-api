@@ -1,5 +1,5 @@
 package com.raizesdonordeste.api.controller;
-import com.raizesdonordeste.api.dto.DTO.PedidoDTO;
+import com.raizesdonordeste.api.dto.PedidoDTO;
 import com.raizesdonordeste.api.dto.request.PedidoRequest;
 import com.raizesdonordeste.api.dto.request.StatusPedidoRequest;
 import com.raizesdonordeste.application.service.PedidoService;

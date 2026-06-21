@@ -1,4 +1,4 @@
-package com.raizesdonordeste.api.dto.DTO;
+package com.raizesdonordeste.api.dto;
 
 import com.raizesdonordeste.domain.enums.CanalPedido;
 import com.raizesdonordeste.domain.enums.StatusPedido;
@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -20,4 +21,5 @@ public class PedidoDTO {
     private StatusPedido status;
     private Long clienteId;
     private Long unidadeId;
+    private LocalDateTime createdAt;
 }

@@ -1,8 +1,10 @@
 package com.raizesdonordeste.application.service;
 
-import com.raizesdonordeste.api.dto.DTO.EstoqueDTO;
+import com.querydsl.core.BooleanBuilder;
+import com.raizesdonordeste.api.dto.EstoqueDTO;
 import com.raizesdonordeste.domain.entity.Estoque;
 import com.raizesdonordeste.domain.entity.Produto;
+import com.raizesdonordeste.domain.entity.QEstoque;
 import com.raizesdonordeste.domain.entity.Unidade;
 import com.raizesdonordeste.infrastructure.repository.EstoqueRepository;
 import com.raizesdonordeste.infrastructure.repository.ProdutoRepository;
@@ -10,7 +12,6 @@ import com.raizesdonordeste.infrastructure.repository.UnidadeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EstoqueService extends BaseService<Estoque, EstoqueDTO, Long> {
@@ -44,8 +45,10 @@ public class EstoqueService extends BaseService<Estoque, EstoqueDTO, Long> {
     }
 
     public List<EstoqueDTO> listarPorUnidade(Long unidadeId) {
-        return ((EstoqueRepository) repository).findByUnidadeId(unidadeId).stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+        QEstoque qEstoque = QEstoque.estoque;
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qEstoque.unidade.id.eq(unidadeId));
+
+        return this.getAllByPredicate(builder);
     }
 }

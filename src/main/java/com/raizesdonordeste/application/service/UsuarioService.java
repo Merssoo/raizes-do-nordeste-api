@@ -1,5 +1,7 @@
 package com.raizesdonordeste.application.service;
 
+import com.raizesdonordeste.api.dto.RoleDTO;
+import com.raizesdonordeste.api.dto.UsuarioDTO;
 import com.raizesdonordeste.api.dto.request.CreateClienteRequest;
 import com.raizesdonordeste.api.dto.request.CreateStaffRequest;
 import com.raizesdonordeste.api.dto.request.LoginRequest;
@@ -20,29 +22,44 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UsuarioService {
+public class UsuarioService extends BaseService<Usuario, UsuarioDTO, Long> {
 
     private final UsuarioRepository usuarioRepository;
     private final RoleRepository roleRepository;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final String adminSecretKey;
 
     public UsuarioService(UsuarioRepository usuarioRepository,
                           RoleRepository roleRepository,
+                          RoleService roleService,
                           PasswordEncoder passwordEncoder,
                           JwtService jwtService,
                           @Value("${app.admin-secret-key}") String adminSecretKey) {
+        super(usuarioRepository, Usuario.class);
         this.usuarioRepository = usuarioRepository;
+        this.roleService = roleService;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.adminSecretKey = adminSecretKey;
     }
 
+    @Override
+    public Usuario toEntity(UsuarioDTO dto) {
+        return null;
+    }
+
+    @Override
+    public UsuarioDTO toDto(Usuario entity) {
+        RoleDTO roleDTO = roleService.toDto(entity.getRole());
+        return new UsuarioDTO(entity.getId(), entity.getNome(), entity.getEmail(), entity.getAtivo(), roleDTO);
+    }
+
     @Transactional(readOnly = true)
-    public Page<Usuario> listarTodos(Pageable pageable) {
-        return usuarioRepository.findAll(pageable);
+    public Page<UsuarioDTO> listarTodos(Pageable pageable) {
+        return this.getPaged(pageable);
     }
 
     @Transactional
@@ -50,6 +67,7 @@ public class UsuarioService {
         if (usuarioRepository.existsByEmail(request.email())) {
             throw new BusinessException("E-mail já cadastrado.");
         }
+
 
         Role role = roleRepository
                 .findByNome(RoleEnum.CLIENTE.name())

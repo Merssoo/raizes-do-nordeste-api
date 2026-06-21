@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> {
 
@@ -66,6 +67,15 @@ public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> 
     @Transactional(readOnly = true)
     public List<D> getAll() {
         return repository.findAll().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<D> getAllByPredicate(Predicate predicate) {
+        Iterable<T> result = repository.findAll(predicate);
+
+        return StreamSupport.stream(result.spliterator(), false)
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }

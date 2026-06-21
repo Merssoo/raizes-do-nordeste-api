@@ -1,7 +1,7 @@
 package com.raizesdonordeste.application.service;
 
 import com.querydsl.core.BooleanBuilder;
-import com.raizesdonordeste.api.dto.DTO.PedidoDTO;
+import com.raizesdonordeste.api.dto.*;
 import com.raizesdonordeste.api.dto.request.ItemPedidoRequest;
 import com.raizesdonordeste.api.dto.request.PedidoRequest;
 import com.raizesdonordeste.api.exception.BusinessException;
@@ -10,6 +10,7 @@ import com.raizesdonordeste.domain.enums.CanalPedido;
 import com.raizesdonordeste.domain.enums.RoleEnum;
 import com.raizesdonordeste.domain.enums.StatusPedido;
 import com.raizesdonordeste.infrastructure.repository.*;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,24 +25,27 @@ import java.util.stream.Collectors;
 @Service
 public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
 
-    private final ItemPedidoRepository itemPedidoRepository;
-    private final EstoqueRepository estoqueRepository;
-    private final ProdutoRepository produtoRepository;
     private final UnidadeRepository unidadeRepository;
     private final UsuarioRepository usuarioRepository;
+    private final UnidadeService unidadeService;
+    private final EstoqueService estoqueService;
+    private final ProdutoService produtoService;
+    private final ItemPedidoService itemPedidoService;
 
     public PedidoService(PedidoRepository repository,
-                         ItemPedidoRepository itemPedidoRepository,
-                         EstoqueRepository estoqueRepository,
-                         ProdutoRepository produtoRepository,
                          UnidadeRepository unidadeRepository,
-                         UsuarioRepository usuarioRepository) {
+                         UsuarioRepository usuarioRepository,
+                         UnidadeService unidadeService,
+                         EstoqueService estoqueService,
+                         ProdutoService produtoService,
+                         @Lazy ItemPedidoService itemPedidoService) {
         super(repository, Pedido.class);
-        this.itemPedidoRepository = itemPedidoRepository;
-        this.estoqueRepository = estoqueRepository;
-        this.produtoRepository = produtoRepository;
         this.unidadeRepository = unidadeRepository;
         this.usuarioRepository = usuarioRepository;
+        this.unidadeService = unidadeService;
+        this.estoqueService = estoqueService;
+        this.produtoService = produtoService;
+        this.itemPedidoService = itemPedidoService;
     }
 
     @Override
@@ -51,6 +55,7 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
         pedido.setValorTotal(dto.getValorTotal());
         pedido.setCanalPedido(dto.getCanalPedido());
         pedido.setStatus(dto.getStatus());
+        pedido.setCreatedAt(dto.getCreatedAt());
         if (dto.getClienteId() != null) {
             pedido.setCliente(usuarioRepository.findById(dto.getClienteId()).orElse(null));
         }
@@ -68,76 +73,74 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
                 entity.getCanalPedido(),
                 entity.getStatus(),
                 entity.getCliente() != null ? entity.getCliente().getId() : null,
-                entity.getUnidade() != null ? entity.getUnidade().getId() : null
+                entity.getUnidade() != null ? entity.getUnidade().getId() : null,
+                entity.getCreatedAt()
         );
     }
 
     @Transactional
     public PedidoDTO criarPedido(PedidoRequest request, Usuario usuario) {
-
-        Usuario cliente = usuario;
+        Long idCliente = usuario.getId();
 
         if (!usuario.getRole().getNome().equals(RoleEnum.CLIENTE)) {
             if (request.idCliente() == null) {
                 throw new BusinessException("ID do cliente é obrigatório para usuários não clientes");
             }
-            cliente = usuarioRepository.findById(request.idCliente()).orElseThrow(() -> new BusinessException("Cliente não encontrado"));
+            idCliente = usuarioRepository.findById(request.idCliente()).orElseThrow(() -> new BusinessException("Cliente não encontrado")).getId();
         }
 
-        Unidade unidade = unidadeRepository.findById(request.unidadeId())
-                .orElseThrow(() -> new BusinessException("Unidade não encontrada"));
+        UnidadeDTO unidadeDTO = unidadeService.getByIdOrError(request.unidadeId());
 
-        Pedido pedido = new Pedido();
-        pedido.setUnidade(unidade);
-        pedido.setCliente(cliente);
-        pedido.setCanalPedido(request.canalPedido());
-        pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
-        pedido.setCreatedAt(LocalDateTime.now());
+        PedidoDTO pedidoDTO = new PedidoDTO();
+        pedidoDTO.setUnidadeId(unidadeDTO.getId());
+        pedidoDTO.setClienteId(idCliente);
+        pedidoDTO.setCanalPedido(request.canalPedido());
+        pedidoDTO.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
+        pedidoDTO.setCreatedAt(LocalDateTime.now());
         BigDecimal valorTotal = BigDecimal.ZERO;
 
-        List<ItemPedido> itens = new ArrayList<>();
+        List<ItemPedidoDTO> itens = new ArrayList<>();
         List<Long> idsProduto = request.itens().stream().map(ItemPedidoRequest::produtoId).collect(Collectors.toList());
 
         QEstoque qEstoque = QEstoque.estoque;
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qEstoque.produto.id.in(idsProduto));
-        builder.and(qEstoque.unidade.id.eq(unidade.getId()));
+        builder.and(qEstoque.unidade.id.eq(unidadeDTO.getId()));
 
-        List<Estoque> estoques = (List<Estoque>) estoqueRepository.findAll(builder);
+        List<EstoqueDTO> estoqueDTOS = estoqueService.getAllByPredicate(builder);
 
         for (ItemPedidoRequest itemReq : request.itens()) {
-            Produto produto = produtoRepository.findById(itemReq.produtoId())
-                    .orElseThrow(() -> new BusinessException("Produto não encontrado: " + itemReq.produtoId()));
+            ProdutoDTO produtoDTO = produtoService.getByIdOrError(itemReq.produtoId());
 
-            Estoque estoque = estoques.stream()
-                    .filter(e -> e.getProduto().getId().equals(produto.getId()))
+            EstoqueDTO estoqueDTO = estoqueDTOS.stream()
+                    .filter(e -> e.getProdutoId().equals(produtoDTO.getId()))
                     .findFirst()
-                    .orElseThrow(() -> new BusinessException("Produto não disponível nesta unidade: " + produto.getNome()));
+                    .orElseThrow(() -> new BusinessException("Produto não disponível nesta unidade: " + produtoDTO.getNome()));
 
-            if (estoque.getQuantidade() < itemReq.quantidade()) {
-                throw new BusinessException("Estoque insuficiente para o produto: " + produto.getNome());
+            if (estoqueDTO.getQuantidade() < itemReq.quantidade()) {
+                throw new BusinessException("Estoque insuficiente para o produto: " + produtoDTO.getNome());
             }
 
-            estoque.setQuantidade(estoque.getQuantidade() - itemReq.quantidade());
-            estoqueRepository.save(estoque);
+            estoqueDTO.setQuantidade(estoqueDTO.getQuantidade() - itemReq.quantidade());
+            estoqueService.save(estoqueDTO);
 
-            ItemPedido item = new ItemPedido();
-            item.setPedido(pedido);
-            item.setProduto(produto);
-            item.setQuantidade(itemReq.quantidade());
-            item.setPrecoUnitario(produto.getPreco());
-            item.setSubtotal(produto.getPreco().multiply(BigDecimal.valueOf(itemReq.quantidade())));
-            valorTotal = valorTotal.add(item.getSubtotal());
-            itens.add(item);
+            ItemPedidoDTO itemPedidoDTO = new ItemPedidoDTO();
+            itemPedidoDTO.setPedidoDTO(pedidoDTO);
+            itemPedidoDTO.setProdutoDTO(produtoDTO);
+            itemPedidoDTO.setQuantidade(itemReq.quantidade());
+            itemPedidoDTO.setPrecoUnitario(produtoDTO.getPreco());
+            itemPedidoDTO.setSubtotal(produtoDTO.getPreco().multiply(BigDecimal.valueOf(itemReq.quantidade())));
+            valorTotal = valorTotal.add(itemPedidoDTO.getSubtotal());
+            itens.add(itemPedidoDTO);
         }
 
-        pedido.setValorTotal(valorTotal);
-        Pedido pedidoSalvo = repository.save(pedido);
+        pedidoDTO.setValorTotal(valorTotal);
+        PedidoDTO pedidoSalvoDTO = save(pedidoDTO);
 
-        for (ItemPedido item : itens) {
-            itemPedidoRepository.save(item);
+        for (ItemPedidoDTO itemPedidoDTO : itens) {
+            itemPedidoService.save(itemPedidoDTO);
         }
-        return toDto(pedidoSalvo);
+        return pedidoSalvoDTO;
     }
 
     @Transactional(readOnly = true)
@@ -147,7 +150,7 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
         if (canalPedido != null) builder.and(qPedido.canalPedido.eq(canalPedido));
         if (status != null) builder.and(qPedido.status.eq(status));
 
-        return ((PedidoRepository) repository).findAll(builder, pageable).map(this::toDto);
+        return this.getPaged(builder, pageable);
     }
 
     @Transactional
@@ -164,14 +167,13 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
 
     @Transactional
     public void atualizarStatus(Long id, StatusPedido novoStatus) {
-        Pedido pedido = repository.findById(id)
-                .orElseThrow(() -> new BusinessException("Pedido não encontrado"));
+        PedidoDTO pedidoDTO = this.getByIdOrError(id);
 
-        if (pedido.getStatus() == StatusPedido.ENTREGUE) {
+        if (pedidoDTO.getStatus() == StatusPedido.ENTREGUE) {
             throw new BusinessException("Não é possível alterar status de pedido entregue");
         }
 
-        pedido.setStatus(novoStatus);
-        repository.save(pedido);
+        pedidoDTO.setStatus(novoStatus);
+        this.save(pedidoDTO);
     }
 }

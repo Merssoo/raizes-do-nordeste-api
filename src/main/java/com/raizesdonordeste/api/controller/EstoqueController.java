@@ -1,7 +1,7 @@
 package com.raizesdonordeste.api.controller;
 
-import com.raizesdonordeste.api.dto.DTO.EstoqueDTO;
-import com.raizesdonordeste.api.dto.DTO.ProdutoDTO;
+import com.raizesdonordeste.api.dto.EstoqueDTO;
+import com.raizesdonordeste.api.dto.ProdutoDTO;
 import com.raizesdonordeste.application.service.EstoqueService;
 import com.raizesdonordeste.application.service.ProdutoService;
 import jakarta.validation.Valid;

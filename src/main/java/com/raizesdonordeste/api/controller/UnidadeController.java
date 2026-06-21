@@ -1,6 +1,6 @@
 package com.raizesdonordeste.api.controller;
 
-import com.raizesdonordeste.api.dto.DTO.UnidadeDTO;
+import com.raizesdonordeste.api.dto.UnidadeDTO;
 import com.raizesdonordeste.application.service.UnidadeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

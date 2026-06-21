@@ -1,5 +1,6 @@
 package com.raizesdonordeste.api.controller;
 
+import com.raizesdonordeste.api.dto.UsuarioDTO;
 import com.raizesdonordeste.api.dto.request.CreateClienteRequest;
 import com.raizesdonordeste.api.dto.request.CreateStaffRequest;
 import com.raizesdonordeste.application.service.UsuarioService;
@@ -20,7 +21,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @GetMapping
-    public ResponseEntity<Page<Usuario>> listar(Pageable pageable) {
+    public ResponseEntity<Page<UsuarioDTO>> listar(Pageable pageable) {
         return ResponseEntity.ok(usuarioService.listarTodos(pageable));
     }
 
