@@ -1,15 +1,19 @@
 package com.raizesdonordeste.application.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
 import com.raizesdonordeste.api.dto.*;
 import com.raizesdonordeste.api.dto.request.ItemPedidoRequest;
 import com.raizesdonordeste.api.dto.request.PedidoRequest;
 import com.raizesdonordeste.api.exception.BusinessException;
+import com.raizesdonordeste.api.exception.GlobalExceptionHandler;
 import com.raizesdonordeste.domain.entity.*;
 import com.raizesdonordeste.domain.enums.CanalPedido;
 import com.raizesdonordeste.domain.enums.RoleEnum;
 import com.raizesdonordeste.domain.enums.StatusPedido;
 import com.raizesdonordeste.infrastructure.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +29,16 @@ import java.util.stream.Collectors;
 @Service
 public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
 
+    private static final Logger logger = LoggerFactory.getLogger(PedidoService.class);
+
     private final UnidadeRepository unidadeRepository;
     private final UsuarioRepository usuarioRepository;
     private final UnidadeService unidadeService;
     private final EstoqueService estoqueService;
     private final ProdutoService produtoService;
     private final ItemPedidoService itemPedidoService;
+    private final IdempotencyRepository idempotencyRepository;
+    private final ObjectMapper objectMapper;
 
     public PedidoService(PedidoRepository repository,
                          UnidadeRepository unidadeRepository,
@@ -38,7 +46,9 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
                          UnidadeService unidadeService,
                          EstoqueService estoqueService,
                          ProdutoService produtoService,
-                         @Lazy ItemPedidoService itemPedidoService) {
+                         @Lazy ItemPedidoService itemPedidoService,
+                         IdempotencyRepository idempotencyRepository,
+                         ObjectMapper objectMapper) {
         super(repository, Pedido.class);
         this.unidadeRepository = unidadeRepository;
         this.usuarioRepository = usuarioRepository;
@@ -46,6 +56,8 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
         this.estoqueService = estoqueService;
         this.produtoService = produtoService;
         this.itemPedidoService = itemPedidoService;
+        this.idempotencyRepository = idempotencyRepository;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -79,7 +91,16 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
     }
 
     @Transactional
-    public PedidoDTO criarPedido(PedidoRequest request, AuthenticatedUsuarioDTO usuarioDTO) {
+    public PedidoDTO criarPedido(PedidoRequest request, AuthenticatedUsuarioDTO usuarioDTO, String idempotencyKey) {
+        if (idempotencyKey != null && idempotencyRepository.existsById(idempotencyKey)) {
+            try {
+                String responseBody = idempotencyRepository.findById(idempotencyKey).get().getResponseBody();
+                return objectMapper.readValue(responseBody, PedidoDTO.class);
+            } catch (Exception e) {
+                throw new BusinessException("Erro ao recuperar resposta idempotente");
+            }
+        }
+
         Long idCliente = usuarioDTO.id();
 
         if (!usuarioDTO.role().equals(RoleEnum.CLIENTE.name())) {
@@ -139,6 +160,15 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
 
         for (ItemPedidoDTO itemPedidoDTO : itens) {
             itemPedidoService.save(itemPedidoDTO);
+        }
+
+        if (idempotencyKey != null) {
+            try {
+                String responseBody = objectMapper.writeValueAsString(pedidoSalvoDTO);
+                idempotencyRepository.save(new IdempotencyKey(idempotencyKey, responseBody, null));
+            } catch (Exception e) {
+                logger.error("Erro ao salvar resposta idempotente", e);
+            }
         }
         return pedidoSalvoDTO;
     }

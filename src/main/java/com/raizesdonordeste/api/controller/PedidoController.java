@@ -25,8 +25,9 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<PedidoDTO> criar(@RequestBody @Valid PedidoRequest request,
-                                           @AuthenticationPrincipal AuthenticatedUsuarioDTO usuarioDTO) {
-        return ResponseEntity.status(201).body(pedidoService.criarPedido(request, usuarioDTO));
+                                           @AuthenticationPrincipal AuthenticatedUsuarioDTO usuarioDTO,
+                                           @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey) {
+        return ResponseEntity.status(201).body(pedidoService.criarPedido(request, usuarioDTO, idempotencyKey));
     }
 
     @GetMapping
