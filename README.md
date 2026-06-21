@@ -53,7 +53,7 @@ A API estará disponível em: `http://localhost:8080`
 ### 4. Documentação (Swagger/OpenAPI)
 Após iniciar a aplicação, a documentação interativa pode ser acessada em:
 
-`http://localhost:8080/swagger-ui/index.html`
+`http://www.localhost:8080/raizes/api/swagger-ui/index.html#/`
 
 ### 5. Rodar os Testes
 Para executar toda a suíte de testes unitários e de integração:
