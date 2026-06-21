@@ -183,7 +183,6 @@
                     <username>postgres</username>
                     <password>admin</password>
                     <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
-                    <shouldRunAnalytics>false</shouldRunAnalytics>
                 </configuration>
             </plugin>
 		</plugins>
