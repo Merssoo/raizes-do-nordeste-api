@@ -52,7 +52,7 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
         repository.save(entity);
     }
 
-    public Page<ProdutoDTO> getProdutosPorUnidade(Long idUnidade, String filter, Pageable pageable) {
+    public Page<ProdutoDTO> getProdutosPorUnidadeComSaldo(Long idUnidade, String filter, Pageable pageable) {
         QProduto qProduto = QProduto.produto;
         QEstoque qEstoque = QEstoque.estoque;
 

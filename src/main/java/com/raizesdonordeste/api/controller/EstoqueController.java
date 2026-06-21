@@ -67,11 +67,11 @@ public class EstoqueController {
     }
 
     @GetMapping("/{idUnidade}/produtos")
-    public ResponseEntity<Page<ProdutoDTO>> listarProdutosPorUnidade(
+    public ResponseEntity<Page<ProdutoDTO>> listarProdutosPorUnidadeComSaldo(
             @PathVariable Long idUnidade,
             @RequestParam(required = false) String filter,
             @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
-        return ResponseEntity.ok(produtoService.getProdutosPorUnidade(idUnidade, filter, pageable));
+        return ResponseEntity.ok(produtoService.getProdutosPorUnidadeComSaldo(idUnidade, filter, pageable));
     }
 
     @GetMapping("/produtos/{id}")
