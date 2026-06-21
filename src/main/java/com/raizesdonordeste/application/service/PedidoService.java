@@ -215,8 +215,16 @@ public class PedidoService extends BaseService<Pedido, PedidoDTO, Long> {
     public void atualizarStatus(Long id, StatusPedido novoStatus) {
         PedidoDTO pedidoDTO = this.getByIdOrError(id);
 
+        if (pedidoDTO.getStatus() == StatusPedido.AGUARDANDO_PAGAMENTO) {
+            throw new BusinessException("Não é possível alterar status de pedido aguardando pagamento. O pedido deve ser pago primeiro.");
+        }
+
         if (pedidoDTO.getStatus() == StatusPedido.ENTREGUE) {
             throw new BusinessException("Não é possível alterar status de pedido entregue");
+        }
+
+        if (pedidoDTO.getStatus() == StatusPedido.CANCELADO) {
+            throw new BusinessException("Não é possível alterar status de pedido cancelado");
         }
 
         pedidoDTO.setStatus(novoStatus);

@@ -38,7 +38,7 @@ CREATE TABLE pagamentos (
     status VARCHAR(50) NOT NULL,
     forma_pagamento VARCHAR(50) NOT NULL,
     data_pagamento TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    pedido_id BIGINT NOT NULL UNIQUE REFERENCES pedidos(id),
+    pedido_id BIGINT NOT NULL REFERENCES pedidos(id),
     CONSTRAINT ck_pagamentos_valor CHECK (valor >= 0),
     CONSTRAINT ck_pagamentos_status CHECK (status IN ('APROVADO', 'RECUSADO'))
 );

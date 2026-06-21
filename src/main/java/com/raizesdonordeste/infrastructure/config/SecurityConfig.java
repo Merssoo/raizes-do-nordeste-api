@@ -55,6 +55,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/usuarios/create-cliente").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name(), RoleEnum.ATENDENTE.name())
                         .requestMatchers(HttpMethod.POST, "/usuarios/create-staff").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
 
+                        .requestMatchers(HttpMethod.PATCH, "/pedidos/*/status").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name(), RoleEnum.COZINHA.name(), RoleEnum.ATENDENTE.name())
+
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

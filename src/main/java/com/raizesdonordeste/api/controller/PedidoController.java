@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -49,7 +50,7 @@ public class PedidoController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/cancelar/{id}")
     public ResponseEntity<Void> cancelar(@PathVariable Long id) {
         pedidoService.cancelar(id);
         return ResponseEntity.noContent().build();
