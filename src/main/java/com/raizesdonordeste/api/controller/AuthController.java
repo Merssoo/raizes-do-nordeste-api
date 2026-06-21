@@ -5,6 +5,8 @@ import com.raizesdonordeste.api.dto.request.RegisterRequest;
 import com.raizesdonordeste.api.dto.response.AuthResponse;
 import com.raizesdonordeste.application.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -32,6 +34,7 @@ public class AuthController {
     @ApiResponse(responseCode = "201", description = "Administrador cadastrado com sucesso")
     @PostMapping("/register-admin")
     public ResponseEntity<Void> registerAdmin(
+            @Parameter(in = ParameterIn.HEADER, name = "X-Admin-Secret-Key", required = true)
             @RequestBody @Valid RegisterRequest request,
             @RequestHeader("X-Admin-Secret-Key") String secretKey
     ) {

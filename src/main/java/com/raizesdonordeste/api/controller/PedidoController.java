@@ -9,6 +9,8 @@ import com.raizesdonordeste.domain.entity.Usuario;
 import com.raizesdonordeste.domain.enums.CanalPedido;
 import com.raizesdonordeste.domain.enums.StatusPedido;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,6 +36,7 @@ public class PedidoController {
     @ApiResponse(responseCode = "201", description = "Pedido criado com sucesso")
     @PostMapping
     public ResponseEntity<PedidoDTO> criar(@RequestBody @Valid PedidoRequest request,
+                                           @Parameter(in = ParameterIn.HEADER, name = "Idempotency-Key", required = true)
                                            @AuthenticationPrincipal AuthenticatedUsuarioDTO usuarioDTO,
                                            @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey) {
 
