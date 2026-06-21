@@ -33,20 +33,22 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/error/**").permitAll()
+                        // Autenticação Pública - caminho relativo ao DispatcherServlet
+                        .requestMatchers("/auth/**", "/error/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/unidades").hasRole(RoleEnum.ADMIN.name())
-                        .requestMatchers(HttpMethod.GET, "/api/unidades").authenticated()
+                        // Permissões Específicas
+                        .requestMatchers(HttpMethod.POST, "/unidades").hasRole(RoleEnum.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/unidades").authenticated()
 
-                        .requestMatchers(HttpMethod.POST, "/api/estoques/produtos").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
-                        .requestMatchers(HttpMethod.GET, "/api/estoques/*/produtos").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/estoques/produtos").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
+                        .requestMatchers(HttpMethod.GET, "/estoques/*/produtos").authenticated()
 
-                        .requestMatchers(HttpMethod.PUT, "/api/estoques/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
-                        .requestMatchers(HttpMethod.GET, "/api/estoques/unidade/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name(), RoleEnum.ATENDENTE.name())
+                        .requestMatchers(HttpMethod.PUT, "/estoques/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
+                        .requestMatchers(HttpMethod.GET, "/estoques/unidade/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name(), RoleEnum.ATENDENTE.name())
 
-                        .requestMatchers(HttpMethod.GET, "/api/usuarios").hasRole(RoleEnum.ADMIN.name())
-                        .requestMatchers(HttpMethod.POST, "/api/usuarios/create-cliente").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name(), RoleEnum.ATENDENTE.name())
-                        .requestMatchers(HttpMethod.POST, "/api/usuarios/create-staff").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
+                        .requestMatchers(HttpMethod.GET, "/usuarios").hasRole(RoleEnum.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/usuarios/create-cliente").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name(), RoleEnum.ATENDENTE.name())
+                        .requestMatchers(HttpMethod.POST, "/usuarios/create-staff").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
 
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
