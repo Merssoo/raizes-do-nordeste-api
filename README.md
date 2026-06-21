@@ -55,9 +55,25 @@ Após iniciar a aplicação, a documentação interativa pode ser acessada em:
 
 `http://www.localhost:8080/raizes/api/swagger-ui/index.html#/`
 
-### 5. Rodar os Testes
+### 5. Rodar os Testes Automatizados
 Para executar toda a suíte de testes unitários e de integração:
 
 ```bash
 ./mvnw test
 ```
+
+## Validação Manual (Postman/Insomnia)
+
+Para validar a API manualmente, utilize a coleção Postman entregue no arquivo `docs/postman_collection.json`.
+
+### Como executar:
+1. Importe o arquivo `Testes Raizes.postman_collection.json` no seu Postman ou Insomnia.
+2. Configure o ambiente (Environment) apontando a variável `base_url` para `http://localhost:8080/raizes/api`.
+3. **Ordem sugerida:**
+   - Execute `Auth/Registro` para criar um usuário.
+   - Execute `Auth/Login` e copie o `token` retornado.
+   - Configure a variável de ambiente `token` com o valor copiado.
+   - As demais requisições já estão configuradas para usar `{{token}}` no cabeçalho `Authorization` (tipo Bearer Token).
+4. A coleção contém 10 cenários (6 positivos e 4 negativos) cobrindo autenticação, validação de dados, fluxo de pedidos e pagamentos.
+
+> **Nota sobre Auditoria:** A funcionalidade de logs/auditoria de ações sensíveis não foi implementada neste MVP.
