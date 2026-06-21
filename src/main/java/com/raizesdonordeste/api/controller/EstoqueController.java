@@ -12,7 +12,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 @RestController
 @RequestMapping("/estoques")
 @RequiredArgsConstructor
@@ -32,8 +31,10 @@ public class EstoqueController {
     }
 
     @GetMapping("/unidade/{unidadeId}")
-    public ResponseEntity<List<EstoqueDTO>> listarPorUnidade(@PathVariable Long unidadeId) {
-        return ResponseEntity.ok(service.listarPorUnidade(unidadeId));
+    public ResponseEntity<Page<EstoqueDTO>> listarPorUnidade(
+            @PathVariable Long unidadeId,
+            @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+        return ResponseEntity.ok(service.listarPorUnidade(unidadeId, pageable));
     }
 
     @GetMapping

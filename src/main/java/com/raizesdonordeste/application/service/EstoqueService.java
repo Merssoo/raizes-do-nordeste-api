@@ -9,6 +9,8 @@ import com.raizesdonordeste.domain.entity.Unidade;
 import com.raizesdonordeste.infrastructure.repository.EstoqueRepository;
 import com.raizesdonordeste.infrastructure.repository.ProdutoRepository;
 import com.raizesdonordeste.infrastructure.repository.UnidadeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,11 +46,11 @@ public class EstoqueService extends BaseService<Estoque, EstoqueDTO, Long> {
         );
     }
 
-    public List<EstoqueDTO> listarPorUnidade(Long unidadeId) {
+    public Page<EstoqueDTO> listarPorUnidade(Long unidadeId, Pageable pageable) {
         QEstoque qEstoque = QEstoque.estoque;
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qEstoque.unidade.id.eq(unidadeId));
 
-        return this.getAllByPredicate(builder);
+        return this.getPaged(builder, pageable);
     }
 }
