@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -40,10 +41,12 @@ public class JwtFilter extends OncePerRequestFilter {
                     String nome = claims.get("nome", String.class);
                     String role = claims.get("role", String.class);
 
+                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+
                     AuthenticatedUsuarioDTO dto = new AuthenticatedUsuarioDTO(userId, email, nome, role);
 
                     UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(dto, null, Collections.emptyList());
+                            new UsernamePasswordAuthenticationToken(dto, null, java.util.List.of(authority));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (ExpiredJwtException e) {

@@ -33,10 +33,8 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Autenticação Pública - caminho relativo ao DispatcherServlet
                         .requestMatchers("/auth/**", "/error/**").permitAll()
 
-                        // Permissões Específicas
                         .requestMatchers(HttpMethod.POST, "/unidades").hasRole(RoleEnum.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, "/unidades").authenticated()
 

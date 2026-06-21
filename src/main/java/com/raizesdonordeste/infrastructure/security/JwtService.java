@@ -24,7 +24,7 @@ public class JwtService {
                 .claim("nome", user.getNome())
                 .claim("role", user.getRole() != null ? user.getRole().getNome() : null)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 900000)) // 15 min
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
