@@ -41,8 +41,8 @@ public class EstoqueService extends BaseService<Estoque, EstoqueDTO, Long> {
 
     @Override
     public Estoque toEntity(EstoqueDTO dto) {
-        Produto produto = dto.getProdutoId() != null ? produtoRepository.findById(dto.getProdutoId()).orElse(null) : null;
-        Unidade unidade = dto.getUnidadeId() != null ? unidadeRepository.findById(dto.getUnidadeId()).orElse(null) : null;
+        Produto produto = Objects.nonNull(dto.getProdutoId()) ? produtoRepository.findById(dto.getProdutoId()).orElseThrow(() -> new BusinessException("Produto inexistente")) : null;
+        Unidade unidade = Objects.nonNull(dto.getUnidadeId()) ? unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new BusinessException("Unidade inexistente")) : null;
         return new Estoque(dto.getId(), dto.getQuantidade(), produto, unidade);
     }
 
