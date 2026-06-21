@@ -35,9 +35,9 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
         return new ProdutoDTO(entity.getId(), entity.getNome(), entity.getDescricao(), entity.getPreco(), entity.getAtivo());
     }
 
-    private void validarProdutoNome(String nome) {
+    private void validarProdutoNome(String nome, String descricao) {
         QProduto qProduto = QProduto.produto;
-        BooleanExpression query = qProduto.nome.equalsIgnoreCase(nome);
+        BooleanExpression query = qProduto.nome.equalsIgnoreCase(nome).and(qProduto.descricao.eq(descricao));
         if (repository.exists(query)) {
             throw new BusinessException("Já existe um produto com esse nome");
         }
@@ -66,13 +66,13 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
 
     @Transactional
     public ProdutoDTO criar(ProdutoDTO produtoDTO) {
-        this.validarProdutoNome(produtoDTO.getNome());
+        this.validarProdutoNome(produtoDTO.getNome(), produtoDTO.getDescricao());
         return save(produtoDTO);
     }
 
     @Transactional
     public ProdutoDTO atualizar(Long id, ProdutoDTO produtoDTO) {
-        this.validarProdutoNome(produtoDTO.getNome());
+        this.validarProdutoNome(produtoDTO.getNome(), produtoDTO.getDescricao());
         return this.update(id, produtoDTO);
     }
 }

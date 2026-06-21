@@ -18,5 +18,7 @@ CREATE TABLE usuarios (
     role_id BIGINT,
     CONSTRAINT pk_usuario PRIMARY KEY (id),
     CONSTRAINT uk_usuario_email UNIQUE (email),
-    CONSTRAINT fk_usuario_role FOREIGN KEY (role_id) REFERENCES roles (id)
+    CONSTRAINT fk_usuario_role FOREIGN KEY (role_id) REFERENCES roles (id),
+    CONSTRAINT ck_usuarios_nome CHECK (length(trim(nome)) > 0),
+    CONSTRAINT ck_usuarios_email CHECK (email LIKE '%@%')
 );
