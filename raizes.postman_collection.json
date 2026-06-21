@@ -7,1029 +7,1059 @@
 	},
 	"item": [
 		{
-			"name": "Registrar Cliente",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"nome\": \"Cliente\",\n  \"email\": \"cliente@email.com\",\n  \"senha\": \"123456\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Registrar Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Cliente\",\n  \"email\": \"cliente@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"auth",
+								"register"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/auth/register",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"auth",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"email\": \"cliente@email.com\",\n  \"senha\": \"123456\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"cliente@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"auth",
+								"login"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/auth/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"auth",
-						"login"
-					]
+				{
+					"name": "Register Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Admin-Secret-Key",
+								"value": "MinhaChaveSecreta123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Admin\",\n  \"email\": \"admin@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/auth/register-admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"auth",
+								"register-admin"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Register Admin",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Buscar Usuarios (SOMENTE ADMIN)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
 					},
-					{
-						"key": "X-Admin-Secret-Key",
-						"value": "MinhaChaveSecreta123",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"nome\": \"Admin\",\n  \"email\": \"admin@email.com\",\n  \"senha\": \"123456\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDQ4ODgsImV4cCI6MTc4MjAwODQ4OH0.p5CAY6hCsnYdeAQ1oShAoScHoVP2lctzT10Jk8fcWSA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Emerson Admin\",\n  \"email\": \"emerson-admin@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"usuarios"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/auth/register-admin",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"auth",
-						"register-admin"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar Usuarios (SOMENTE ADMIN)",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDQ4ODgsImV4cCI6MTc4MjAwODQ4OH0.p5CAY6hCsnYdeAQ1oShAoScHoVP2lctzT10Jk8fcWSA",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"nome\": \"Emerson Admin\",\n  \"email\": \"emerson-admin@email.com\",\n  \"senha\": \"123456\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Registrar cliente possuindo acesso (ADMIN,GERENTE,ATENDENTE)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDQ4ODgsImV4cCI6MTc4MjAwODQ4OH0.p5CAY6hCsnYdeAQ1oShAoScHoVP2lctzT10Jk8fcWSA"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"cliente\",\n  \"email\": \"cliente@email.com\",\n  \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/usuarios/create-cliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"usuarios",
+								"create-cliente"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/usuarios",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"usuarios"
-					]
+				{
+					"name": "Registar usuario staff possuindo acesso (ADMIN,GERENTE)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDQ4ODgsImV4cCI6MTc4MjAwODQ4OH0.p5CAY6hCsnYdeAQ1oShAoScHoVP2lctzT10Jk8fcWSA"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Atendente\",\n  \"email\": \"atendente@email.com\",\n  \"senha\": \"123456\",\n  \"role\": \"ATENDENTE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/usuarios/create-staff",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"usuarios",
+								"create-staff"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Criar Unidades (SOMENTE ADMIN)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJ1c2VySWQiOjIsIm5vbWUiOiJBZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MjA1Nzk5MywiZXhwIjoxNzgyMDYxNTkzfQ.llZTYmrwoDgS0nHaVdX78BtYLuwR3_X_J7lDQ7EPDKI"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"nome\": \"Unidade Primaria\",\n  \"cidade\": \"Criciuma\",\n  \"estado\": \"SC\",\n  \"ativo\": true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Unidades",
+			"item": [
+				{
+					"name": "Criar Unidades (SOMENTE ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJ1c2VySWQiOjIsIm5vbWUiOiJBZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MjA1Nzk5MywiZXhwIjoxNzgyMDYxNTkzfQ.llZTYmrwoDgS0nHaVdX78BtYLuwR3_X_J7lDQ7EPDKI"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Unidade Primaria\",\n  \"cidade\": \"Criciuma\",\n  \"estado\": \"SC\",\n  \"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/unidades",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"unidades"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/unidades",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"unidades"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar Unidades",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
+				{
+					"name": "Buscar Unidades",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJ1c2VySWQiOjIsIm5vbWUiOiJBZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MjA1Nzk5MywiZXhwIjoxNzgyMDYxNTkzfQ.llZTYmrwoDgS0nHaVdX78BtYLuwR3_X_J7lDQ7EPDKI"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJ1c2VySWQiOjIsIm5vbWUiOiJBZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MjA1Nzk5MywiZXhwIjoxNzgyMDYxNTkzfQ.llZTYmrwoDgS0nHaVdX78BtYLuwR3_X_J7lDQ7EPDKI"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/unidades?filter=nome=unidade",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"unidades"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "nome=unidade"
+								}
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/unidades?filter=nome=unidade",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"unidades"
-					],
-					"query": [
-						{
-							"key": "filter",
-							"value": "nome=unidade"
+				{
+					"name": "Buscar Unidade",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDg3MTYsImV4cCI6MTc4MjAxMjMxNn0.QRUNAElU_uT_PXsqz5MpXjHYUXwi8KIQLGSARnJFgbQ"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/unidades/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"unidades",
+								"3"
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar Unidade",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDg3MTYsImV4cCI6MTc4MjAxMjMxNn0.QRUNAElU_uT_PXsqz5MpXjHYUXwi8KIQLGSARnJFgbQ"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/unidades/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"unidades",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Registrar cliente possuindo acesso (ADMIN,GERENTE,ATENDENTE)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDQ4ODgsImV4cCI6MTc4MjAwODQ4OH0.p5CAY6hCsnYdeAQ1oShAoScHoVP2lctzT10Jk8fcWSA"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"nome\": \"cliente\",\n  \"email\": \"cliente@email.com\",\n  \"senha\": \"123456\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/usuarios/create-cliente",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"usuarios",
-						"create-cliente"
-					]
+				{
+					"name": "Editar unidades (SOMENTE ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMTk5NzMsImV4cCI6MTc4MjAyMzU3M30.up_vnh7jXXv3f6OdkyvAmp_wkvFsJxEdJuB88oyiqrw"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"nome\": \"Unidade Central\",\n    \"cidade\": \"Forquilhinha\",\n    \"estado\": \"SC\",\n    \"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/unidades/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"unidades",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Registar usuario staff possuindo acesso (ADMIN,GERENTE)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDQ4ODgsImV4cCI6MTc4MjAwODQ4OH0.p5CAY6hCsnYdeAQ1oShAoScHoVP2lctzT10Jk8fcWSA"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"nome\": \"Atendente\",\n  \"email\": \"atendente@email.com\",\n  \"senha\": \"123456\",\n  \"role\": \"ATENDENTE\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Produtos",
+			"item": [
+				{
+					"name": "Criar Produto acesso (ADMIN,GERENTE)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDg3MTYsImV4cCI6MTc4MjAxMjMxNn0.QRUNAElU_uT_PXsqz5MpXjHYUXwi8KIQLGSARnJFgbQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Café Gourmet Regional\",\n  \"descricao\": \"Café torrado e moído artesanalmente, notas de chocolate.\",\n  \"preco\": 45.90,\n  \"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques/produtos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques",
+								"produtos"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/usuarios/create-staff",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"usuarios",
-						"create-staff"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Criar Produto acesso (ADMIN,GERENTE)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
+				{
+					"name": "Buscar Produtos acesso (ADMIN,GERENTE)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDg3MTYsImV4cCI6MTc4MjAxMjMxNn0.QRUNAElU_uT_PXsqz5MpXjHYUXwi8KIQLGSARnJFgbQ"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"nome\": \"Café Gourmet Regional\",\n  \"descricao\": \"Café torrado e moído artesanalmente, notas de chocolate.\",\n  \"preco\": 45.90,\n  \"ativo\": true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJ1c2VySWQiOjIsIm5vbWUiOiJBZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MjA1Nzk5MywiZXhwIjoxNzgyMDYxNTkzfQ.llZTYmrwoDgS0nHaVdX78BtYLuwR3_X_J7lDQ7EPDKI"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques/produtos?filter=nome=leite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques",
+								"produtos"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "nome=leite"
+								}
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques/produtos",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques",
-						"produtos"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar Produtos acesso (ADMIN,GERENTE)",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJ1c2VySWQiOjIsIm5vbWUiOiJBZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MjA1Nzk5MywiZXhwIjoxNzgyMDYxNTkzfQ.llZTYmrwoDgS0nHaVdX78BtYLuwR3_X_J7lDQ7EPDKI"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Buscar Produto acesso (ADMIN,GERENTE)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques/produtos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques",
+								"produtos",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques/produtos?filter=nome=leite",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques",
-						"produtos"
-					],
-					"query": [
-						{
-							"key": "filter",
-							"value": "nome=leite"
+				{
+					"name": "Desativar Produto acesso (ADMIN,GERENTE)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques/produtos/desativar/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques",
+								"produtos",
+								"desativar",
+								"1"
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar Produto acesso (ADMIN,GERENTE)",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques/produtos/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques",
-						"produtos",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Editar Produto acesso (ADMIN,GERENTE)",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"id\": 1,\n    \"nome\": \"Café Gourmet\",\n    \"descricao\": \"Café torrado e moído artesanalmente, notas de chocolate.\",\n    \"preco\": 45.90,\n    \"ativo\": true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques/produtos/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques",
-						"produtos",
-						"1"
-					]
+				{
+					"name": "Editar Produto acesso (ADMIN,GERENTE)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"nome\": \"Café Gourmet\",\n    \"descricao\": \"Café torrado e moído artesanalmente, notas de chocolate.\",\n    \"preco\": 45.90,\n    \"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques/produtos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques",
+								"produtos",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Desativar Produto acesso (ADMIN,GERENTE)",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Estoque",
+			"item": [
+				{
+					"name": "Criar estoque de produtos acesso (ADMIN,GERENTE)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantidade\": 150,\n  \"produtoId\": 1,\n  \"unidadeId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques/produtos/desativar/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques",
-						"produtos",
-						"desativar",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Criar estoque de produtos acesso (ADMIN,GERENTE)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"quantidade\": 150,\n  \"produtoId\": 1,\n  \"unidadeId\": 3\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Buscar estoques de produtos acesso (ADMIN,GERENTE)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar estoques de produtos acesso (ADMIN,GERENTE)",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar estoque de produto acesso (ADMIN,GRENTE)",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Atualizar estoque de produto acesso (ADMIN,GERENTE)",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"id\": 1,\n    \"quantidade\": 200,\n    \"produtoId\": 1,\n    \"unidadeId\": 3\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Buscar estoque de produto acesso (ADMIN,GRENTE)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar estoque de produtos por unidade com saldo acesso (ADMIN,GERENTE,ATENDENTE)",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Atualizar estoque de produto acesso (ADMIN,GERENTE)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"quantidade\": 200,\n    \"produtoId\": 1,\n    \"unidadeId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques/unidade/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques",
-						"unidade",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar estoque de produtos por unidade com saldo",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
+				{
+					"name": "Buscar estoque de produtos por unidade com saldo acesso (ADMIN,GERENTE,ATENDENTE)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJ1c2VySWQiOjIsIm5vbWUiOiJBZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MjA1Nzk5MywiZXhwIjoxNzgyMDYxNTkzfQ.llZTYmrwoDgS0nHaVdX78BtYLuwR3_X_J7lDQ7EPDKI"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/estoques/unidade/1/produtos?filter=descricao=notas",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"estoques",
-						"unidade",
-						"1",
-						"produtos"
-					],
-					"query": [
-						{
-							"key": "filter",
-							"value": "descricao=notas"
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMDk5NzUsImV4cCI6MTc4MjAxMzU3NX0.v7YjcxTe67iplgEC8se7tnQevXbEH2NHuTLyBb-F7do"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques/unidade/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques",
+								"unidade",
+								"3"
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Editar unidades (SOMENTE ADMIN)",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbWVyc29uLWFkbWluQGVtYWlsLmNvbSIsInVzZXJJZCI6Miwibm9tZSI6IkVtZXJzb24gQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3ODIwMTk5NzMsImV4cCI6MTc4MjAyMzU3M30.up_vnh7jXXv3f6OdkyvAmp_wkvFsJxEdJuB88oyiqrw"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"id\": 3,\n    \"nome\": \"Unidade Central\",\n    \"cidade\": \"Forquilhinha\",\n    \"estado\": \"SC\",\n    \"ativo\": true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/unidades/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"unidades",
-						"3"
-					]
+				{
+					"name": "Buscar estoque de produtos por unidade com saldo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJ1c2VySWQiOjIsIm5vbWUiOiJBZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MjA1Nzk5MywiZXhwIjoxNzgyMDYxNTkzfQ.llZTYmrwoDgS0nHaVdX78BtYLuwR3_X_J7lDQ7EPDKI"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/estoques/unidade/1/produtos?filter=descricao=notas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"estoques",
+								"unidade",
+								"1",
+								"produtos"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "descricao=notas"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Criar pedido",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4"
-					},
-					{
-						"key": "Idempotency-Key",
-						"value": "hash12ssd19sasas",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"unidadeId\": 1,\n    \"canalPedido\": \"WEB\",\n    \"itens\": [\n        {\n            \"produtoId\": 1,\n            \"quantidade\": 2\n        }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Pedido",
+			"item": [
+				{
+					"name": "Criar pedido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "hash12ssd19sasas",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"unidadeId\": 1,\n    \"canalPedido\": \"WEB\",\n    \"itens\": [\n        {\n            \"produtoId\": 1,\n            \"quantidade\": 2\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pedidos"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/pedidos",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"pedidos"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar pedidos",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/pedidos",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"pedidos"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cancelar pedido",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
+				{
+					"name": "Buscar pedidos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pedidos"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/pedidos/cancelar/4",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"pedidos",
-						"cancelar",
-						"4"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Pagar pedido",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"pedidoId\": 5,\n    \"formaPagamento\": \"PIX\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/pagamentos",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"pagamentos"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Atualizar status pedido",
-			"request": {
-				"method": "PATCH",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
+				{
+					"name": "Cancelar pedido",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pedidos/cancelar/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pedidos",
+								"cancelar",
+								"4"
+							]
+						}
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"status\": \"EM_PREPARACAO\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/raizes/api/pedidos/5/status",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"raizes",
-						"api",
-						"pedidos",
-						"5",
-						"status"
-					]
+				{
+					"name": "Pagar pedido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pedidoId\": 5,\n    \"formaPagamento\": \"PIX\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pagamentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pagamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar status pedido",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnRlQGVtYWlsLmNvbSIsInVzZXJJZCI6MSwibm9tZSI6IkNsaWVudGUiLCJyb2xlIjoiQ0xJRU5URSIsImlhdCI6MTc4MjA2MTcxOSwiZXhwIjoxNzgyMDY1MzE5fQ.P10w7TroqKbFjIfN4W8lGk-bH_orQL5zbW4-EFHZqS4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"EM_PREPARACAO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/raizes/api/pedidos/5/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"raizes",
+								"api",
+								"pedidos",
+								"5",
+								"status"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }
