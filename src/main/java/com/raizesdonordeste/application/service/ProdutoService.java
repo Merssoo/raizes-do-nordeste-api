@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
 
@@ -35,9 +37,10 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
         return new ProdutoDTO(entity.getId(), entity.getNome(), entity.getDescricao(), entity.getPreco(), entity.getAtivo());
     }
 
-    private void validarProdutoNome(String nome, String descricao) {
+    private void validarProdutoNome(String nome, String descricao, Long id) {
         QProduto qProduto = QProduto.produto;
         BooleanExpression query = qProduto.nome.equalsIgnoreCase(nome).and(qProduto.descricao.eq(descricao));
+        query = Objects.nonNull(id) ? query.and(qProduto.id.ne(id)) : query;
         if (repository.exists(query)) {
             throw new BusinessException("Já existe um produto com esse nome");
         }
@@ -66,13 +69,13 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
 
     @Transactional
     public ProdutoDTO criar(ProdutoDTO produtoDTO) {
-        this.validarProdutoNome(produtoDTO.getNome(), produtoDTO.getDescricao());
+        this.validarProdutoNome(produtoDTO.getNome(), produtoDTO.getDescricao(), null);
         return save(produtoDTO);
     }
 
     @Transactional
     public ProdutoDTO atualizar(Long id, ProdutoDTO produtoDTO) {
-        this.validarProdutoNome(produtoDTO.getNome(), produtoDTO.getDescricao());
+        this.validarProdutoNome(produtoDTO.getNome(), produtoDTO.getDescricao(), id);
         return this.update(id, produtoDTO);
     }
 }
