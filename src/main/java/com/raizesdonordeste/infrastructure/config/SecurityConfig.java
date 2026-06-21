@@ -45,7 +45,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/estoques/produtos/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
                         .requestMatchers(HttpMethod.GET, "/estoques/*/produtos").authenticated()
 
+                        .requestMatchers(HttpMethod.POST, "/estoques").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
                         .requestMatchers(HttpMethod.PUT, "/estoques/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
+                        .requestMatchers(HttpMethod.GET, "/estoques").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
+                        .requestMatchers(HttpMethod.GET, "/estoques/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name())
                         .requestMatchers(HttpMethod.GET, "/estoques/unidade/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.GERENTE.name(), RoleEnum.ATENDENTE.name())
 
                         .requestMatchers(HttpMethod.GET, "/usuarios").hasRole(RoleEnum.ADMIN.name())
