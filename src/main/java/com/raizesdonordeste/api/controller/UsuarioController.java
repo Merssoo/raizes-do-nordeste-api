@@ -2,10 +2,9 @@ package com.raizesdonordeste.api.controller;
 
 import com.raizesdonordeste.api.dto.AuthenticatedUsuarioDTO;
 import com.raizesdonordeste.api.dto.UsuarioDTO;
-import com.raizesdonordeste.api.dto.request.CreateClienteRequest;
 import com.raizesdonordeste.api.dto.request.CreateStaffRequest;
+import com.raizesdonordeste.api.dto.request.RegisterRequest;
 import com.raizesdonordeste.application.service.UsuarioService;
-import com.raizesdonordeste.domain.entity.Usuario;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,8 +26,8 @@ public class UsuarioController {
     }
 
     @PostMapping("/create-cliente")
-    public ResponseEntity<Void> criarCliente(@RequestBody @Valid CreateClienteRequest request) {
-        usuarioService.criarCliente(request);
+    public ResponseEntity<Void> criarCliente(@RequestBody @Valid RegisterRequest request) {
+        usuarioService.register(request);
         return ResponseEntity.status(201).build();
     }
 

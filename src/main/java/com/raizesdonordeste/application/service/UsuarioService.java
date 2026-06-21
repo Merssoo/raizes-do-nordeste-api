@@ -3,7 +3,6 @@ package com.raizesdonordeste.application.service;
 import com.raizesdonordeste.api.dto.AuthenticatedUsuarioDTO;
 import com.raizesdonordeste.api.dto.RoleDTO;
 import com.raizesdonordeste.api.dto.UsuarioDTO;
-import com.raizesdonordeste.api.dto.request.CreateClienteRequest;
 import com.raizesdonordeste.api.dto.request.CreateStaffRequest;
 import com.raizesdonordeste.api.dto.request.LoginRequest;
 import com.raizesdonordeste.api.dto.request.RegisterRequest;
@@ -63,25 +62,22 @@ public class UsuarioService extends BaseService<Usuario, UsuarioDTO, Long> {
         return this.getPaged(pageable);
     }
 
-    @Transactional
-    public void criarCliente(CreateClienteRequest request) {
-        if (usuarioRepository.existsByEmail(request.email())) {
-            throw new BusinessException("E-mail já cadastrado.");
-        }
-
-
-        Role role = roleRepository
-                .findByNome(RoleEnum.CLIENTE.name())
-                .orElseThrow(() -> new BusinessException("Role não encontrada"));
-
+    private void criarUsuario(String nome, String email, String senha, Role role) {
         Usuario usuario = new Usuario();
-        usuario.setNome(request.nome());
-        usuario.setEmail(request.email());
-        usuario.setSenha(passwordEncoder.encode(request.senha()));
+        usuario.setNome(nome);
+        usuario.setEmail(email);
+        usuario.setSenha(passwordEncoder.encode(senha));
         usuario.setAtivo(true);
         usuario.setRole(role);
 
         usuarioRepository.save(usuario);
+
+    }
+
+    private void validarExisteUsuarioByEmail(String email) {
+        if (usuarioRepository.existsByEmail(email)) {
+            throw new BusinessException("E-mail já cadastrado.");
+        }
     }
 
     @Transactional
@@ -101,22 +97,13 @@ public class UsuarioService extends BaseService<Usuario, UsuarioDTO, Long> {
             }
         }
 
-        if (usuarioRepository.existsByEmail(request.email())) {
-            throw new BusinessException("E-mail já cadastrado.");
-        }
+        this.validarExisteUsuarioByEmail(request.email());
 
         Role role = roleRepository
                 .findByNome(request.role().name())
                 .orElseThrow(() -> new BusinessException("Role não encontrada"));
 
-        Usuario usuario = new Usuario();
-        usuario.setNome(request.nome());
-        usuario.setEmail(request.email());
-        usuario.setSenha(passwordEncoder.encode(request.senha()));
-        usuario.setAtivo(true);
-        usuario.setRole(role);
-
-        usuarioRepository.save(usuario);
+       this.criarUsuario(request.nome(), request.email(), request.senha(), role);
     }
 
     @Transactional
@@ -124,43 +111,25 @@ public class UsuarioService extends BaseService<Usuario, UsuarioDTO, Long> {
         if (!adminSecretKey.equals(secretKey)) {
             throw new BusinessException("Chave de segurança inválida.");
         }
-        
-        if (usuarioRepository.existsByEmail(request.email())) {
-            throw new BusinessException("E-mail já cadastrado.");
-        }
+
+        this.validarExisteUsuarioByEmail(request.email());
 
         Role role = roleRepository
                 .findByNome(RoleEnum.ADMIN.name())
                 .orElseThrow(() -> new BusinessException("Role não encontrada"));
 
-        Usuario usuario = new Usuario();
-        usuario.setNome(request.nome());
-        usuario.setEmail(request.email());
-        usuario.setSenha(passwordEncoder.encode(request.senha()));
-        usuario.setAtivo(true);
-        usuario.setRole(role);
-
-        usuarioRepository.save(usuario);
+        this.criarUsuario(request.nome(), request.email(), request.senha(), role);
     }
 
     @Transactional
     public void register(RegisterRequest request) {
-        if (usuarioRepository.existsByEmail(request.email())) {
-            throw new BusinessException("E-mail já cadastrado.");
-        }
+        this.validarExisteUsuarioByEmail(request.email());
 
         Role role = roleRepository
                 .findByNome(RoleEnum.CLIENTE.name())
                 .orElseThrow(() -> new BusinessException("Role não encontrada"));
 
-        Usuario usuario = new Usuario();
-        usuario.setNome(request.nome());
-        usuario.setEmail(request.email());
-        usuario.setSenha(passwordEncoder.encode(request.senha()));
-        usuario.setAtivo(true);
-        usuario.setRole(role);
-
-        usuarioRepository.save(usuario);
+        this.criarUsuario(request.nome(), request.email(), request.senha(), role);
     }
 
     @Transactional(readOnly = true)
