@@ -63,7 +63,7 @@ public interface BaseRepository<T, ID> extends JpaRepository<T, ID>,
         }
 
         long total = query.fetchCount();
-        java.util.List<T> content = query.offset(pageable.getOffset())
+        List<T> content = query.offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 

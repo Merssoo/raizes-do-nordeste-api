@@ -2,10 +2,12 @@ package com.raizesdonordeste.application.service;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.raizesdonordeste.api.exception.BusinessException;
+import com.raizesdonordeste.application.shared.Identificavel;
 import com.raizesdonordeste.infrastructure.repository.BaseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> {
+public abstract class BaseService<T, D extends Identificavel<ID>, ID>  implements GenericService<T, D, ID> {
 
     protected final BaseRepository<T, ID> repository;
     protected final Class<T> entityClass;
@@ -37,6 +39,10 @@ public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> 
     @Override
     @Transactional
     public D update(ID id, D dto) {
+        if (!id.equals(dto.getId())) {
+            throw new BusinessException("O ID da URL (" + id + ") não confere com o ID do DTO (" + dto.getId() + ")");
+        }
+
         if (!repository.existsById(id)) {
             throw new BusinessException("Registro não encontrado com o ID: " + id);
         }
@@ -114,6 +120,10 @@ public abstract class BaseService<T, D, ID> implements GenericService<T, D, ID> 
     protected Page<D> applyFilterAndPagination(JPAQuery<T> query, String filter, Pageable pageable) {
         Page<T> page = repository.findAllWithFilterQuery(query, filter, entityClass, pageable);
         return page.map(this::toDto);
+    }
+
+    protected Boolean exist(BooleanExpression query) {
+        return repository.exists(query);
     }
 
     public abstract T toEntity(D dto);

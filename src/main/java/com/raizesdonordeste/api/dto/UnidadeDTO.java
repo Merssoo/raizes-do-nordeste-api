@@ -1,5 +1,6 @@
 package com.raizesdonordeste.api.dto;
 
+import com.raizesdonordeste.application.shared.Identificavel;
 import com.raizesdonordeste.domain.enums.EstadoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UnidadeDTO {
+public class UnidadeDTO implements Identificavel<Long> {
     private Long id;
     private String nome;
     private String cidade;

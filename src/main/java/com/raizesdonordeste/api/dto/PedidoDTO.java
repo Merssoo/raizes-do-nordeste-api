@@ -1,5 +1,6 @@
 package com.raizesdonordeste.api.dto;
 
+import com.raizesdonordeste.application.shared.Identificavel;
 import com.raizesdonordeste.domain.enums.CanalPedido;
 import com.raizesdonordeste.domain.enums.StatusPedido;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PedidoDTO {
+public class PedidoDTO implements Identificavel<Long> {
     private Long id;
     private BigDecimal valorTotal;
     private CanalPedido canalPedido;

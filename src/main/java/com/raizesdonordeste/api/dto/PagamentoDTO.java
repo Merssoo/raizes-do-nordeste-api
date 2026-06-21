@@ -1,5 +1,6 @@
 package com.raizesdonordeste.api.dto;
 
+import com.raizesdonordeste.application.shared.Identificavel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PagamentoDTO {
+public class PagamentoDTO implements Identificavel<Long> {
 
     private Long id;
     private BigDecimal valor;

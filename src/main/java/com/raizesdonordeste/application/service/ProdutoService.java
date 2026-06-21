@@ -1,5 +1,6 @@
 package com.raizesdonordeste.application.service;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.raizesdonordeste.api.dto.ProdutoDTO;
@@ -34,6 +35,14 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
         return new ProdutoDTO(entity.getId(), entity.getNome(), entity.getDescricao(), entity.getPreco(), entity.getAtivo());
     }
 
+    private void validarProdutoNome(String nome) {
+        QProduto qProduto = QProduto.produto;
+        BooleanExpression query = qProduto.nome.equalsIgnoreCase(nome);
+        if (repository.exists(query)) {
+            throw new BusinessException("Já existe um produto com esse nome");
+        }
+    }
+
     @Transactional
     public void inativar(Long id) {
         Produto entity = repository.findById(id)
@@ -53,5 +62,17 @@ public class ProdutoService extends BaseService<Produto, ProdutoDTO, Long> {
                         .and(qEstoque.quantidade.gt(0)));
 
         return applyFilterAndPagination(query, filter, pageable);
+    }
+
+    @Transactional
+    public ProdutoDTO criar(ProdutoDTO produtoDTO) {
+        this.validarProdutoNome(produtoDTO.getNome());
+        return save(produtoDTO);
+    }
+
+    @Transactional
+    public ProdutoDTO atualizar(Long id, ProdutoDTO produtoDTO) {
+        this.validarProdutoNome(produtoDTO.getNome());
+        return this.update(id, produtoDTO);
     }
 }

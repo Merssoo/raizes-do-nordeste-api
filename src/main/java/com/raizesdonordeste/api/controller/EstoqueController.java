@@ -22,12 +22,12 @@ public class EstoqueController {
 
     @PostMapping
     public ResponseEntity<EstoqueDTO> criar(@RequestBody @Valid EstoqueDTO estoqueDto) {
-        return ResponseEntity.status(201).body(service.save(estoqueDto));
+        return ResponseEntity.status(201).body(service.criar(estoqueDto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EstoqueDTO> atualizar(@PathVariable Long id, @RequestBody @Valid EstoqueDTO estoqueDto) {
-        return ResponseEntity.ok(service.update(id, estoqueDto));
+        return ResponseEntity.ok(service.atualizar(id, estoqueDto));
     }
 
     @GetMapping("/unidade/{unidadeId}")
@@ -53,7 +53,7 @@ public class EstoqueController {
 
     @PutMapping("/produtos/{id}")
     public ResponseEntity<ProdutoDTO> atualizarProduto(@PathVariable Long id, @RequestBody @Valid ProdutoDTO produtoDto) {
-        return ResponseEntity.ok(produtoService.update(id, produtoDto));
+        return ResponseEntity.ok(produtoService.atualizar(id, produtoDto));
     }
 
     @PutMapping("/produtos/desativar/{id}")
@@ -64,7 +64,7 @@ public class EstoqueController {
 
     @PostMapping("/produtos")
     public ResponseEntity<ProdutoDTO> criarProduto(@RequestBody @Valid ProdutoDTO produtoDto) {
-        return ResponseEntity.status(201).body(produtoService.save(produtoDto));
+        return ResponseEntity.status(201).body(produtoService.criar(produtoDto));
     }
 
     @GetMapping("/{idUnidade}/produtos")

@@ -1,5 +1,6 @@
 package com.raizesdonordeste.api.dto;
 
+import com.raizesdonordeste.application.shared.Identificavel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemPedidoDTO {
+public class ItemPedidoDTO implements Identificavel<Long> {
 
     private Long id;
     private Integer quantidade;

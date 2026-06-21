@@ -1,5 +1,6 @@
 package com.raizesdonordeste.api.controller;
 
+import com.raizesdonordeste.api.dto.EstoqueDTO;
 import com.raizesdonordeste.api.dto.UnidadeDTO;
 import com.raizesdonordeste.application.service.UnidadeService;
 import jakarta.validation.Valid;
@@ -19,7 +20,12 @@ public class UnidadeController {
 
     @PostMapping
     public ResponseEntity<UnidadeDTO> criar(@RequestBody @Valid UnidadeDTO unidadeDto) {
-        return ResponseEntity.status(201).body(service.save(unidadeDto));
+        return ResponseEntity.status(201).body(service.criar(unidadeDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UnidadeDTO> atualizar(@PathVariable Long id, @RequestBody @Valid UnidadeDTO unidadeDto) {
+        return ResponseEntity.ok(service.atualizar(id, unidadeDto));
     }
 
     @GetMapping
