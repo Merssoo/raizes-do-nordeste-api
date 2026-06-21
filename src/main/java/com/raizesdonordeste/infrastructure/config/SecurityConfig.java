@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/error/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/unidades").hasRole(RoleEnum.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, "/unidades").authenticated()
