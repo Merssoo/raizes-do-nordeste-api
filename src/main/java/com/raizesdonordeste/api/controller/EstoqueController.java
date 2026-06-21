@@ -66,7 +66,7 @@ public class EstoqueController {
         return ResponseEntity.status(201).body(produtoService.criar(produtoDto));
     }
 
-    @GetMapping("/{idUnidade}/produtos")
+    @GetMapping("/unidade/{idUnidade}/produtos")
     public ResponseEntity<Page<ProdutoDTO>> listarProdutosPorUnidadeComSaldo(
             @PathVariable Long idUnidade,
             @RequestParam(required = false) String filter,
