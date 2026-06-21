@@ -1,5 +1,6 @@
 package com.raizesdonordeste.domain.entity;
 
+import com.raizesdonordeste.domain.enums.EstadoEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,8 @@ public class Unidade {
 
     private String cidade;
 
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private EstadoEnum estado;
 
     private Boolean ativo;
 }
